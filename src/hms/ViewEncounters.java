@@ -4,26 +4,32 @@
  */
 package hms;
 
+import static java.awt.image.ImageObserver.HEIGHT;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
-import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
+
 /**
  *
  * @author adeda
  */
-public class ViewPatients extends javax.swing.JFrame {
+public class ViewEncounters extends javax.swing.JFrame {
 
     /**
-     * Creates new form b
+     * Creates new form ViewEncounters
      */
-    public ViewPatients() {
+    private static String id;
+    private static String firstName;
+    private static String lastName;
+    public ViewEncounters(String id, String firstName, String lastName) {
         initComponents();
-                        populateTable();
+        this.id = id;
+        this.firstName = firstName;
+this.lastName = lastName;
+        populateTable();
 
     }
 
@@ -39,24 +45,23 @@ public class ViewPatients extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         titleLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        patientsTable = new javax.swing.JTable();
-        searchField = new javax.swing.JTextField();
-        deleteButton = new javax.swing.JButton();
+        encHistoryTable = new javax.swing.JTable();
         viewButton = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
         backButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         titleLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel.setText("View Patients");
+        titleLabel.setText("Encounter History");
 
-        patientsTable.setModel(new javax.swing.table.DefaultTableModel(
+        encHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "First Name", "Last Name"
+                "DateOfEnc", "Complaint", "Diagnosis"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -67,23 +72,17 @@ public class ViewPatients extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(patientsTable);
+        jScrollPane1.setViewportView(encHistoryTable);
+        if (encHistoryTable.getColumnModel().getColumnCount() > 0) {
+            encHistoryTable.getColumnModel().getColumn(0).setResizable(false);
+            encHistoryTable.getColumnModel().getColumn(1).setResizable(false);
+            encHistoryTable.getColumnModel().getColumn(2).setResizable(false);
+        }
 
-        searchField.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        searchField.setForeground(new java.awt.Color(153, 153, 153));
-        searchField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        searchField.setText("Search Field");
-        searchField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                searchFieldFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                searchFieldFocusLost(evt);
-            }
-        });
-        searchField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                searchFieldKeyPressed(evt);
+        viewButton.setText("View Encounter");
+        viewButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewButtonActionPerformed(evt);
             }
         });
 
@@ -91,13 +90,6 @@ public class ViewPatients extends javax.swing.JFrame {
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
-            }
-        });
-
-        viewButton.setText("View");
-        viewButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewButtonActionPerformed(evt);
             }
         });
 
@@ -115,39 +107,34 @@ public class ViewPatients extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(backButton2)
-                        .addGap(277, 277, 277)
+                        .addGap(28, 28, 28)
+                        .addComponent(backButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(265, 265, 265)
                         .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(394, 394, 394)
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(87, 87, 87)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 825, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 883, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(306, 306, 306)
-                        .addComponent(viewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(110, 110, 110)
-                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(78, Short.MAX_VALUE))
+                        .addGap(269, 269, 269)
+                        .addComponent(viewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(208, 208, 208)
+                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(19, 19, 19)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(backButton2))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(70, 70, 70)
-                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
+                .addGap(32, 32, 32)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(58, 58, 58)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(deleteButton)
-                    .addComponent(viewButton))
-                .addContainerGap(127, Short.MAX_VALUE))
+                    .addComponent(viewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(252, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -170,46 +157,54 @@ public class ViewPatients extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void searchFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchFieldFocusGained
+    private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
         // TODO add your handling code here:
-        if (searchField.getText().equals("Search Field")) {
-            searchField.setText("");
-        }
-    }//GEN-LAST:event_searchFieldFocusGained
+        int selectedIndex = encHistoryTable.getSelectedRow();
+        if (selectedIndex < 0) {
+            JOptionPane.showMessageDialog(this, "Please select employee to view.", "Error", HEIGHT);
+        } else {
+            try {
+                String selectedEnc = String.valueOf(encHistoryTable.getValueAt(selectedIndex, 0));
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
 
-    private void searchFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchFieldFocusLost
-        // TODO add your handling code here:
-        if (searchField.getText().equals("")) {
-            searchField.setText("Search Field");
-        }
-    }//GEN-LAST:event_searchFieldFocusLost
+                String sql = "select * from id_"+id+"_enchistory where DateOfEnc = '" + selectedEnc + "'";
+                PreparedStatement ptst = conn.prepareStatement(sql);
+                ResultSet rs = ptst.executeQuery();
+                //            System.out.println(rs);
+                rs.next();
+                String dateOfEnc = rs.getString("DateOfEnc");
+                String complaint = rs.getString("Complaint");
+                String diagnosis = rs.getString("Diagnosis");
 
-    private void searchFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyPressed
-        // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) patientsTable.getModel();
-        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(model);
-        patientsTable.setRowSorter(tr);
-        tr.setRowFilter(RowFilter.regexFilter("(?i)" + searchField.getText().trim()));
-    }//GEN-LAST:event_searchFieldKeyPressed
+                UpdateEncounter ad = new UpdateEncounter(id, dateOfEnc, complaint, diagnosis, firstName, lastName);
+                ad.setVisible(true);
+                this.dispose();
+
+                conn.close();
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e, "sjkd", HEIGHT);
+            }
+        }
+    }//GEN-LAST:event_viewButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
-        int selectedIndex = patientsTable.getSelectedRow();
+        int selectedIndex = encHistoryTable.getSelectedRow();
         if (selectedIndex < 0) {
             JOptionPane.showMessageDialog(this, "Please select employee to delete.", "Error", HEIGHT);
         } else {
             try {
-                String selectedDoc = String.valueOf(patientsTable.getValueAt(selectedIndex, 0));
+                String selectedDoc = String.valueOf(encHistoryTable.getValueAt(selectedIndex, 0));
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
 
-                String sql = "delete from patientsdirectory where ID= '"+ selectedDoc +"'";
+                String sql = "delete from id_"+id+"_enchistory where DateOfEnc= '"+ selectedDoc +"'";
                 PreparedStatement ptst = conn.prepareStatement(sql);
                 ptst.executeUpdate();
                 
-                String sql2 = "DROP TABLE id_"+selectedDoc+"_enchistory";
-                PreparedStatement ptst2 = conn.prepareStatement(sql2);
-                ptst2.executeUpdate();
+                
                 
                 populateTable();
                 
@@ -222,41 +217,10 @@ public class ViewPatients extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
-    private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
-        // TODO add your handling code here:
-        int selectedIndex = patientsTable.getSelectedRow();
-        if (selectedIndex < 0) {
-            JOptionPane.showMessageDialog(this, "Please select employee to view.", "Error", HEIGHT);
-        } else {
-            try {
-                String selectedDoc = String.valueOf(patientsTable.getValueAt(selectedIndex, 0));
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
-
-                String sql = "select * from patientsdirectory where ID= '"+ selectedDoc +"'";
-                PreparedStatement ptst = conn.prepareStatement(sql);
-                ResultSet rs = ptst.executeQuery();
-                //            System.out.println(rs);
-                rs.next();
-                String firstName = rs.getString("FirstName");
-                String lastName = rs.getString("LastName");
-                String id = rs.getString("ID");
-
-                UpdatePatient ad = new UpdatePatient(id, firstName, lastName);
-                ad.setVisible(true);
-                this.dispose();
-
-                conn.close();
-
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, e, "sjkd", HEIGHT);
-            }
-        }
-    }//GEN-LAST:event_viewButtonActionPerformed
-
     private void backButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButton2ActionPerformed
         // TODO add your handling code here:
-        AdminDashboard ad = new AdminDashboard();
+
+        UpdatePatient ad = new UpdatePatient(id, firstName, lastName);
         ad.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_backButton2ActionPerformed
@@ -278,21 +242,20 @@ public class ViewPatients extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewPatients.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewEncounters.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewPatients.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewEncounters.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewPatients.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewEncounters.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewPatients.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewEncounters.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewPatients().setVisible(true);
+                new ViewEncounters(id, firstName, lastName).setVisible(true);
             }
         });
     }
@@ -300,10 +263,9 @@ public class ViewPatients extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton2;
     private javax.swing.JButton deleteButton;
+    private javax.swing.JTable encHistoryTable;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable patientsTable;
-    private javax.swing.JTextField searchField;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
@@ -313,13 +275,13 @@ public class ViewPatients extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
 
-            String sql = "select * from patientsdirectory";
+            String sql = "select * from id_" + id + "_enchistory";
             PreparedStatement ptst = conn.prepareStatement(sql);
             ResultSet rs = ptst.executeQuery();
-            DefaultTableModel model = (DefaultTableModel) patientsTable.getModel();
+            DefaultTableModel model = (DefaultTableModel) encHistoryTable.getModel();
             model.setRowCount(0);
             while (rs.next()) {
-                Object o[] = {rs.getString("ID"), rs.getString("FirstName"), rs.getString("LastName")};
+                Object o[] = {rs.getString("DateOfEnc"), rs.getString("Complaint"), rs.getString("Diagnosis")};
                 model.addRow(o);
             }
             conn.close();
@@ -328,4 +290,6 @@ public class ViewPatients extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e, "sjkd", HEIGHT);
         }
     }
+
+    
 }
