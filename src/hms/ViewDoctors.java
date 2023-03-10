@@ -4,6 +4,13 @@
  */
 package hms;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author adeda
@@ -15,6 +22,8 @@ public class ViewDoctors extends javax.swing.JFrame {
      */
     public ViewDoctors() {
         initComponents();
+        populateTable();
+
     }
 
     /**
@@ -28,8 +37,10 @@ public class ViewDoctors extends javax.swing.JFrame {
 
         titleLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        docTable = new javax.swing.JTable();
         backButton = new javax.swing.JButton();
+        addDoctorButton = new javax.swing.JButton();
+        viewButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -37,28 +48,42 @@ public class ViewDoctors extends javax.swing.JFrame {
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleLabel.setText("Doctor Details");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        docTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "First Name", "Last Name", "E-mail"
+                "ID", "First Name", "Last Name"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(docTable);
 
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
+            }
+        });
+
+        addDoctorButton.setText("Add Doctor");
+        addDoctorButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addDoctorButtonActionPerformed(evt);
+            }
+        });
+
+        viewButton.setText("View");
+        viewButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewButtonActionPerformed(evt);
             }
         });
 
@@ -75,7 +100,12 @@ public class ViewDoctors extends javax.swing.JFrame {
                         .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(54, 54, 54)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 897, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 897, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(310, 310, 310)
+                        .addComponent(addDoctorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(144, 144, 144)
+                        .addComponent(viewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -87,7 +117,11 @@ public class ViewDoctors extends javax.swing.JFrame {
                     .addComponent(backButton))
                 .addGap(37, 37, 37)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(220, Short.MAX_VALUE))
+                .addGap(45, 45, 45)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addDoctorButton)
+                    .addComponent(viewButton))
+                .addContainerGap(152, Short.MAX_VALUE))
         );
 
         pack();
@@ -95,11 +129,54 @@ public class ViewDoctors extends javax.swing.JFrame {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
-        
+
         AdminDashboard ad = new AdminDashboard();
-            ad.setVisible(true);
-            this.dispose();
+        ad.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
+
+    private void addDoctorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDoctorButtonActionPerformed
+        // TODO add your handling code here:
+        AddDoctor ad = new AddDoctor();
+        ad.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_addDoctorButtonActionPerformed
+
+    private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
+        // TODO add your handling code here:
+        int selectedIndex = docTable.getSelectedRow();
+        if (selectedIndex < 0) {
+            JOptionPane.showMessageDialog(this, "Please select employee to view.", "Error", HEIGHT);
+        } else {
+            try {
+                String selectedDoc = String.valueOf(docTable.getValueAt(selectedIndex, 0));
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+
+            String sql = "select * from doctorsdirectory where ID= '"+ selectedDoc +"'";
+            PreparedStatement ptst = conn.prepareStatement(sql);
+            ResultSet rs = ptst.executeQuery();
+//            System.out.println(rs);
+            rs.next();
+            String firstName = rs.getString("FirstName");
+            String lastName = rs.getString("LastName");
+            String id = rs.getString("ID");
+
+            UpdateDoctor ad = new UpdateDoctor(id, firstName, lastName);
+        ad.setVisible(true);
+        this.dispose();
+        conn.close();
+            
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+        }
+        }
+        
+        
+        
+        
+    }//GEN-LAST:event_viewButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -137,9 +214,43 @@ public class ViewDoctors extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addDoctorButton;
     private javax.swing.JButton backButton;
+    private javax.swing.JTable docTable;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel titleLabel;
+    private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
+
+    private void populateTable() {
+
+//        DefaultTableModel model = (DefaultTableModel) docTable.getModel();
+//        model.setRowCount(0);
+//        for (Doctor u : allDoctors.getAllDoctors()) {
+//            Object[] rows = new Object[3];
+//            rows[0] = u;
+//            rows[1] = u.getFirstName();
+//            rows[2] = u.getLastName();
+//            rows[3] = u.getEmail();
+//            model.addRow(rows);
+//    }
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+
+            String sql = "select * from doctorsdirectory";
+            PreparedStatement ptst = conn.prepareStatement(sql);
+            ResultSet rs = ptst.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) docTable.getModel();
+            model.setRowCount(0);
+            while (rs.next()) {
+                Object o[] = {rs.getString("ID"), rs.getString("FirstName"), rs.getString("LastName")};
+                model.addRow(o);
+            }
+            conn.close();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+        }
+    }
 }

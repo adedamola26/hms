@@ -4,6 +4,7 @@
  */
 package hms;
 
+import data.DoctorDirectory;
 import java.awt.BorderLayout;
 
 /**
@@ -16,8 +17,10 @@ public class MainJFrame extends javax.swing.JFrame {
      * Creates new form MainJFrame
      */
 //    static CardLayout cl = new CardLayout();
+
     public MainJFrame() {
         initComponents();
+
     }
 
     /**
@@ -152,4 +155,3 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JButton visitorButton;
     // End of variables declaration//GEN-END:variables
 }
-

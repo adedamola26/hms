@@ -4,6 +4,8 @@
  */
 package hms;
 
+import data.DoctorDirectory;
+
 /**
  *
  * @author adeda
@@ -13,8 +15,10 @@ public class AdminDashboard extends javax.swing.JFrame {
     /**
      * Creates new form AdminDashboard
      */
+
     public AdminDashboard() {
         initComponents();
+
     }
 
     /**
@@ -31,6 +35,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         viewDoctorButton = new javax.swing.JButton();
         viewPatientButton = new javax.swing.JButton();
         viewHospitalButton = new javax.swing.JButton();
+        addDoctorButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,6 +52,13 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         viewHospitalButton.setText("View Hospitals");
 
+        addDoctorButton.setText("Add Doctor");
+        addDoctorButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addDoctorButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -62,7 +74,10 @@ public class AdminDashboard extends javax.swing.JFrame {
                         .addComponent(viewHospitalButton))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(407, 407, 407)
-                        .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(241, 241, 241)
+                        .addComponent(addDoctorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(221, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -75,7 +90,9 @@ public class AdminDashboard extends javax.swing.JFrame {
                     .addComponent(viewDoctorButton)
                     .addComponent(viewPatientButton)
                     .addComponent(viewHospitalButton))
-                .addContainerGap(384, Short.MAX_VALUE))
+                .addGap(45, 45, 45)
+                .addComponent(addDoctorButton)
+                .addContainerGap(316, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -101,9 +118,16 @@ public class AdminDashboard extends javax.swing.JFrame {
     private void viewDoctorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewDoctorButtonActionPerformed
         // TODO add your handling code here:
         ViewDoctors vd = new ViewDoctors();
-            vd.setVisible(true);
-            this.dispose();
+        vd.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_viewDoctorButtonActionPerformed
+
+    private void addDoctorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDoctorButtonActionPerformed
+        // TODO add your handling code here:
+        AddDoctor ad = new AddDoctor();
+        ad.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_addDoctorButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -141,6 +165,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addDoctorButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JButton viewDoctorButton;

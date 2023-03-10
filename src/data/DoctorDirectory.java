@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class DoctorDirectory {
     
-    private ArrayList<Doctor> allDoctors;
+    private static ArrayList<Doctor> allDoctors;
 
     public DoctorDirectory() {
         this.allDoctors = new ArrayList<>();
