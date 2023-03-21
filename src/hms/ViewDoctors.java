@@ -4,6 +4,7 @@
  */
 package hms;
 
+import data.DoctorDirectory;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -176,27 +177,18 @@ public class ViewDoctors extends javax.swing.JFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
+        DoctorDirectory allDocs = new DoctorDirectory();
+
         int selectedIndex = docTable.getSelectedRow();
         if (selectedIndex < 0) {
             JOptionPane.showMessageDialog(this, "Please select employee to delete.", "Error", HEIGHT);
         } else {
-            try {
-                String selectedDoc = String.valueOf(docTable.getValueAt(selectedIndex, 0));
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+            String selectedDoc = String.valueOf(docTable.getValueAt(selectedIndex, 0));
+            allDocs.removeDoctor(selectedDoc);
 
-            String sql = "delete from doctorsdirectory where ID= '"+ selectedDoc +"'";
-            PreparedStatement ptst = conn.prepareStatement(sql);
-            ptst.executeUpdate();
-        populateTable();
-        conn.close();
-            
+            populateTable();
+        }
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
-        }
-        }
-        
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
@@ -207,29 +199,28 @@ public class ViewDoctors extends javax.swing.JFrame {
         } else {
             try {
                 String selectedDoc = String.valueOf(docTable.getValueAt(selectedIndex, 0));
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
 
-            String sql = "select * from doctorsdirectory where ID= '"+ selectedDoc +"'";
-            PreparedStatement ptst = conn.prepareStatement(sql);
-            ResultSet rs = ptst.executeQuery();
+                String sql = "select * from doctorsdirectory where ID= '" + selectedDoc + "'";
+                PreparedStatement ptst = conn.prepareStatement(sql);
+                ResultSet rs = ptst.executeQuery();
 //            System.out.println(rs);
-            rs.next();
-            String firstName = rs.getString("FirstName");
-            String lastName = rs.getString("LastName");
-            String id = rs.getString("ID");
+                rs.next();
+                String firstName = rs.getString("FirstName");
+                String lastName = rs.getString("LastName");
+                String id = rs.getString("ID");
 
-            UpdateDoctor ad = new UpdateDoctor(id, firstName, lastName);
-        ad.setVisible(true);
-        this.dispose();
-        conn.close();
-            
+                UpdateDoctor ad = new UpdateDoctor(id, firstName, lastName);
+                ad.setVisible(true);
+                this.dispose();
+                conn.close();
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+            }
         }
-        }
-        
+
     }//GEN-LAST:event_viewButtonActionPerformed
 
     private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
@@ -319,13 +310,12 @@ public class ViewDoctors extends javax.swing.JFrame {
 //            rows[3] = u.getEmail();
 //            model.addRow(rows);
 //    }
+        DoctorDirectory allDocs = new DoctorDirectory();
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+            Object[] oConn = allDocs.getAllDoctors();
+            ResultSet rs = (ResultSet) oConn[0];
+            Connection conn = (Connection) oConn[1];
 
-            String sql = "select * from doctorsdirectory";
-            PreparedStatement ptst = conn.prepareStatement(sql);
-            ResultSet rs = ptst.executeQuery();
             DefaultTableModel model = (DefaultTableModel) docTable.getModel();
             model.setRowCount(0);
             while (rs.next()) {
@@ -335,7 +325,7 @@ public class ViewDoctors extends javax.swing.JFrame {
             conn.close();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+            System.out.println(e);
         }
     }
 }

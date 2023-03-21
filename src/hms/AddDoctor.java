@@ -5,6 +5,8 @@
 package hms;
 
 //import com.sun.jdi.connect.spi.Connection;
+import data.Doctor;
+import data.DoctorDirectory;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -40,8 +42,6 @@ public class AddDoctor extends javax.swing.JFrame {
         lastNameField = new javax.swing.JTextField();
         idField = new javax.swing.JTextField();
         idLabel = new javax.swing.JLabel();
-        emailField = new javax.swing.JTextField();
-        emailLabel = new javax.swing.JLabel();
         saveButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
 
@@ -56,8 +56,6 @@ public class AddDoctor extends javax.swing.JFrame {
         lastNameLabel.setText("Last Name");
 
         idLabel.setText("ID");
-
-        emailLabel.setText("E-mail");
 
         saveButton.setText("SAVE");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
@@ -100,11 +98,6 @@ public class AddDoctor extends javax.swing.JFrame {
                         .addGap(166, 166, 166)
                         .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(242, 242, 242)
-                        .addComponent(emailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(166, 166, 166)
-                        .addComponent(emailField, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(387, 387, 387)
                         .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(367, Short.MAX_VALUE))
@@ -128,11 +121,7 @@ public class AddDoctor extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(idLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(emailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(emailField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
                 .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(247, 247, 247))
         );
@@ -142,26 +131,15 @@ public class AddDoctor extends javax.swing.JFrame {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
-
-            String sql = "insert into doctorsdirectory values (?,?,?)";
-            PreparedStatement ptst = conn.prepareStatement(sql);
-
-            ptst.setString(2, firstNameField.getText());
-            ptst.setString(3, lastNameField.getText());
-            ptst.setString(1, idField.getText());
-            ptst.executeUpdate();
-            
-
-            
-            
-            conn.close();
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
-        }
+        Doctor newDoc = new Doctor();
+        DoctorDirectory allDocs = new DoctorDirectory();
+        
+        newDoc.setFirstName(firstNameField.getText());
+        newDoc.setLastName(lastNameField.getText());
+        newDoc.setId(idField.getText());
+        
+        allDocs.addDoctor(newDoc);
+        
         clearFields();
     }//GEN-LAST:event_saveButtonActionPerformed
 
@@ -210,8 +188,6 @@ public class AddDoctor extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
-    private javax.swing.JTextField emailField;
-    private javax.swing.JLabel emailLabel;
     private javax.swing.JTextField firstNameField;
     private javax.swing.JLabel firstNameLabel;
     private javax.swing.JTextField idField;
@@ -227,6 +203,5 @@ public class AddDoctor extends javax.swing.JFrame {
         firstNameField.setText("");
         lastNameField.setText("");
         idField.setText("");
-        emailField.setText("");
     }
 }
