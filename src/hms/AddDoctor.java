@@ -28,26 +28,15 @@ public class AddDoctor extends javax.swing.JFrame {
     /**
      * Creates new form AddDoctor
      */
-HospitalDirectory allHosp;
+    HospitalDirectory allHosp;
 
     public AddDoctor() {
         initComponents();
-        
-        allHosp= new HospitalDirectory();
-        
-        try {
-            Object[] oConn = allHosp.getAllHospitals();
-            ResultSet rs = (ResultSet) oConn[0];
-            Connection conn = (Connection) oConn[1];
+        allHosp = new HospitalDirectory();
 
-            while (rs.next()) {
-                employerBox.addItem(rs.getString("Name"));
-            }
-            conn.close();
+        getAllHospitals();
 
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        
     }
 
     /**
@@ -371,8 +360,7 @@ HospitalDirectory allHosp;
         // TODO add your handling code here:
         Doctor newDoc = new Doctor();
         DoctorDirectory allDocs = new DoctorDirectory();
-        
-        
+
         newDoc.setFirstName(firstNameField.getText());
         newDoc.setLastName(lastNameField.getText());
         newDoc.setAge(Integer.parseInt(ageField.getText()));
@@ -387,10 +375,9 @@ HospitalDirectory allHosp;
         newDoc.setSpecialization(specializationField.getText());
         newDoc.setUsername(usernameField.getText());
         newDoc.setPassword(passwordField.getText());
-        
-        
+
         allDocs.addDoctor(newDoc);
-        
+
         clearFields();
     }//GEN-LAST:event_saveButtonActionPerformed
 
@@ -552,5 +539,21 @@ HospitalDirectory allHosp;
         firstNameField.setText("");
         lastNameField.setText("");
         emailField.setText("");
+    }
+
+    private void getAllHospitals() {
+        try {
+            Object[] oConn = allHosp.getAllHospitals();
+            ResultSet rs = (ResultSet) oConn[0];
+            Connection conn = (Connection) oConn[1];
+
+            while (rs.next()) {
+                employerBox.addItem(rs.getString("Name"));
+            }
+            conn.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }

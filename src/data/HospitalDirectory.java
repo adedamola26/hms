@@ -59,21 +59,31 @@ public class HospitalDirectory {
 
             ptst.setString(1, aHospital.getName());
             ptst.executeUpdate();
-            
-            String sql2 = "create table "+aHospital.getName().replace(' ', '_')+"_Doctors ("
-                                        + "ID int(255),"
 
+            String sql2 = "create table " + aHospital.getName().replace(' ', '_') + "_Doctors ("
+                    + "ID int(255),"
                     + "FirstName varchar(255),"
-                    + "LastName varchar(255))";
+                    + "LastName varchar(255))"
+                    + "Age int(255),"
+                    + "Gender int(255),"
+                    + "CellNumber bigint(255),"
+                    + "Email varchar(255),"
+                    + "BloodGroup varchar(255),"
+                    + "StartDate varchar(255),"
+                    + "Address varchar(255),"
+                    + "City varchar(255),"
+                    + "Specialization varchar(255),"
+                    + "Username varchar(255),"
+                    + "Password varchar(255)";
             PreparedStatement ptst2 = conn.prepareStatement(sql2);
 
-            
             ptst2.executeUpdate();
-            
+
             conn.close();
+
         } catch (Exception e) {
 //            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
-System.out.println(e);
+            System.out.println(e);
 
         }
     }

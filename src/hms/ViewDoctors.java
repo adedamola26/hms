@@ -29,7 +29,7 @@ public class ViewDoctors extends javax.swing.JFrame {
     public ViewDoctors() {
         initComponents();
         populateTable();
-        
+
     }
 
     /**
@@ -181,7 +181,7 @@ public class ViewDoctors extends javax.swing.JFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
         DoctorDirectory allDocs = new DoctorDirectory();
-        
+
         int selectedIndex = docTable.getSelectedRow();
         if (selectedIndex < 0) {
             JOptionPane.showMessageDialog(this, "Please select employee to delete.", "Error", HEIGHT);
@@ -219,24 +219,24 @@ public class ViewDoctors extends javax.swing.JFrame {
                 selectedDoc.setId((String) docTable.getValueAt(selectedIndex, 0));
                 selectedDoc.setFirstName(String.valueOf(docTable.getValueAt(selectedIndex, 1)));
                 selectedDoc.setLastName(String.valueOf(docTable.getValueAt(selectedIndex, 2)));
-                selectedDoc.setAge(Integer.valueOf((String)(docTable.getValueAt(selectedIndex, 3))));
+                selectedDoc.setAge(Integer.valueOf((String) (docTable.getValueAt(selectedIndex, 3))));
+                selectedDoc.setEmployer((String) docTable.getValueAt(selectedIndex, 4));
                 selectedDoc.setGender((String) docTable.getValueAt(selectedIndex, 5));
-                selectedDoc.setCellNum( Long.valueOf((String) docTable.getValueAt(selectedIndex, 6)));
+                selectedDoc.setCellNum(Long.valueOf((String) docTable.getValueAt(selectedIndex, 6)));
                 selectedDoc.setEmail((String) docTable.getValueAt(selectedIndex, 7));
                 selectedDoc.setBloodGroup((String) docTable.getValueAt(selectedIndex, 8));
-                selectedDoc.setEmployer((String) docTable.getValueAt(selectedIndex, 4));
                 selectedDoc.setStartDate(fmt.parse(startDate));
                 selectedDoc.setAddress((String) docTable.getValueAt(selectedIndex, 10));
                 selectedDoc.setCity((String) docTable.getValueAt(selectedIndex, 11));
                 selectedDoc.setSpecialization((String) docTable.getValueAt(selectedIndex, 12));
                 selectedDoc.setUsername((String) docTable.getValueAt(selectedIndex, 13));
                 selectedDoc.setPassword((String) docTable.getValueAt(selectedIndex, 14));
-                
+
                 UpdateDoctor ad = new UpdateDoctor(selectedDoc);
                 ad.setVisible(true);
                 this.dispose();
 //                conn.close();
-                
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
             }
@@ -336,7 +336,7 @@ public class ViewDoctors extends javax.swing.JFrame {
             Object[] oConn = allDocs.getAllDoctors();
             ResultSet rs = (ResultSet) oConn[0];
             Connection conn = (Connection) oConn[1];
-            
+
             DefaultTableModel model = (DefaultTableModel) docTable.getModel();
             model.setRowCount(0);
             while (rs.next()) {
@@ -358,7 +358,7 @@ public class ViewDoctors extends javax.swing.JFrame {
                 model.addRow(o);
             }
             conn.close();
-            
+
         } catch (Exception e) {
             System.out.println(e);
         }
