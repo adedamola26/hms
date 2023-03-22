@@ -4,6 +4,7 @@
  */
 package hms;
 
+import data.Doctor;
 import static java.awt.image.ImageObserver.HEIGHT;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,15 +20,12 @@ public class UpdateDoctor extends javax.swing.JFrame {
     /**
      * Creates new form UpdateDoctor
      */
-    private static String id;
-    private static String firstName;
-    private static String lastName;
+    private static Doctor selectedDoctor;
+    
 
-    public UpdateDoctor(String id, String firstName, String lastName) {
+    public UpdateDoctor(Doctor aDoctor) {
         initComponents();
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.selectedDoctor = aDoctor;
         populateFields();
     }
 
@@ -175,7 +173,7 @@ public class UpdateDoctor extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UpdateDoctor(id, firstName, lastName).setVisible(true);
+                new UpdateDoctor(selectedDoctor).setVisible(true);
             }
         });
     }
@@ -192,8 +190,8 @@ public class UpdateDoctor extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void populateFields() {
-        idField.setText(id);
-        firstNameField.setText(firstName);
-        lastNameField.setText(lastName);
+        idField.setText(selectedDoctor.getId());
+        firstNameField.setText(selectedDoctor.getFirstName());
+        lastNameField.setText(selectedDoctor.getLastName());
     }
 }

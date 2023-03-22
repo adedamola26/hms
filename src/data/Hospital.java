@@ -11,11 +11,19 @@ package data;
 public class Hospital {
     
     private String name;
-    private String address;
-    private String servicesProvided;
-    private Long cellNum;
-    private String id;
-    private String openingHours; // TODO change data type, add closing hours
+//    private String address;
+//    private String servicesProvided;
+//    private Long cellNum;
+//    private String id;
+//    private String openingHours; // TODO change data type, add closing hours
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     
     
 }

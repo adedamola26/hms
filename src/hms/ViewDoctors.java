@@ -4,11 +4,14 @@
  */
 package hms;
 
+import data.Doctor;
 import data.DoctorDirectory;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -26,7 +29,7 @@ public class ViewDoctors extends javax.swing.JFrame {
     public ViewDoctors() {
         initComponents();
         populateTable();
-
+        
     }
 
     /**
@@ -58,11 +61,11 @@ public class ViewDoctors extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "First Name", "Last Name"
+                "ID", "First Name", "Last Name", "Age", "Employer", "Gender", "CellNumber", "Email", "BloodGroup", "StartDate", "Address", "City", "Specialization", "Username", "Password"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -178,14 +181,14 @@ public class ViewDoctors extends javax.swing.JFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
         DoctorDirectory allDocs = new DoctorDirectory();
-
+        
         int selectedIndex = docTable.getSelectedRow();
         if (selectedIndex < 0) {
             JOptionPane.showMessageDialog(this, "Please select employee to delete.", "Error", HEIGHT);
         } else {
-            String selectedDoc = String.valueOf(docTable.getValueAt(selectedIndex, 0));
-            allDocs.removeDoctor(selectedDoc);
-
+            String docID = String.valueOf(docTable.getValueAt(selectedIndex, 0));
+            String docEmp = String.valueOf(docTable.getValueAt(selectedIndex, 3));
+            allDocs.removeDoctor(docID, docEmp);
             populateTable();
         }
 
@@ -198,24 +201,42 @@ public class ViewDoctors extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please select employee to view.", "Error", HEIGHT);
         } else {
             try {
-                String selectedDoc = String.valueOf(docTable.getValueAt(selectedIndex, 0));
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
-
-                String sql = "select * from doctorsdirectory where ID= '" + selectedDoc + "'";
-                PreparedStatement ptst = conn.prepareStatement(sql);
-                ResultSet rs = ptst.executeQuery();
-//            System.out.println(rs);
-                rs.next();
-                String firstName = rs.getString("FirstName");
-                String lastName = rs.getString("LastName");
-                String id = rs.getString("ID");
-
-                UpdateDoctor ad = new UpdateDoctor(id, firstName, lastName);
+                Doctor selectedDoc = new Doctor();
+//                String selectedDoc = String.valueOf(docTable.getValueAt(selectedIndex, 0));
+//                Class.forName("com.mysql.cj.jdbc.Driver");
+//                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+//
+//                String sql = "select * from doctorsdirectory where ID= '" + selectedDoc + "'";
+//                PreparedStatement ptst = conn.prepareStatement(sql);
+//                ResultSet rs = ptst.executeQuery();
+//                rs.next();
+//                
+//                String firstName = rs.getString("FirstName");
+//                String lastName = rs.getString("LastName");
+//                String id = rs.getString("ID");
+                String startDate = (String) docTable.getValueAt(selectedIndex, 9);
+                DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                selectedDoc.setId((String) docTable.getValueAt(selectedIndex, 0));
+                selectedDoc.setFirstName(String.valueOf(docTable.getValueAt(selectedIndex, 1)));
+                selectedDoc.setLastName(String.valueOf(docTable.getValueAt(selectedIndex, 2)));
+                selectedDoc.setAge(Integer.valueOf((String)(docTable.getValueAt(selectedIndex, 3))));
+                selectedDoc.setGender((String) docTable.getValueAt(selectedIndex, 5));
+                selectedDoc.setCellNum( Long.valueOf((String) docTable.getValueAt(selectedIndex, 6)));
+                selectedDoc.setEmail((String) docTable.getValueAt(selectedIndex, 7));
+                selectedDoc.setBloodGroup((String) docTable.getValueAt(selectedIndex, 8));
+                selectedDoc.setEmployer((String) docTable.getValueAt(selectedIndex, 4));
+                selectedDoc.setStartDate(fmt.parse(startDate));
+                selectedDoc.setAddress((String) docTable.getValueAt(selectedIndex, 10));
+                selectedDoc.setCity((String) docTable.getValueAt(selectedIndex, 11));
+                selectedDoc.setSpecialization((String) docTable.getValueAt(selectedIndex, 12));
+                selectedDoc.setUsername((String) docTable.getValueAt(selectedIndex, 13));
+                selectedDoc.setPassword((String) docTable.getValueAt(selectedIndex, 14));
+                
+                UpdateDoctor ad = new UpdateDoctor(selectedDoc);
                 ad.setVisible(true);
                 this.dispose();
-                conn.close();
-
+//                conn.close();
+                
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
             }
@@ -315,15 +336,29 @@ public class ViewDoctors extends javax.swing.JFrame {
             Object[] oConn = allDocs.getAllDoctors();
             ResultSet rs = (ResultSet) oConn[0];
             Connection conn = (Connection) oConn[1];
-
+            
             DefaultTableModel model = (DefaultTableModel) docTable.getModel();
             model.setRowCount(0);
             while (rs.next()) {
-                Object o[] = {rs.getString("ID"), rs.getString("FirstName"), rs.getString("LastName")};
+                Object o[] = {rs.getString("ID"),
+                    rs.getString("FirstName"),
+                    rs.getString("LastName"),
+                    rs.getString("Age"),
+                    rs.getString("Employer"),
+                    rs.getString("Gender"),
+                    rs.getString("CellNumber"),
+                    rs.getString("Email"),
+                    rs.getString("BloodGroup"),
+                    rs.getString("StartDate"),
+                    rs.getString("Address"),
+                    rs.getString("City"),
+                    rs.getString("Specialization"),
+                    rs.getString("Username"),
+                    rs.getString("Password"),};
                 model.addRow(o);
             }
             conn.close();
-
+            
         } catch (Exception e) {
             System.out.println(e);
         }

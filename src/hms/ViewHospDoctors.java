@@ -4,8 +4,6 @@
  */
 package hms;
 
-import data.HospitalDirectory;
-import data.HospitalDirectory;
 import static java.awt.image.ImageObserver.HEIGHT;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,14 +16,19 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author adeda
  */
-public class ViewHospitals extends javax.swing.JFrame {
+public class ViewHospDoctors extends javax.swing.JFrame {
 
     /**
-     * Creates new form NewJFrame
+     * Creates new form ViewHospDoctors
      */
-    public ViewHospitals() {
+    
+        private static String name;
+
+    public ViewHospDoctors(String name) {
         initComponents();
-        populateTable();
+                this.name = name;
+        titleLabel.setText(name+ "'s Doctors");
+populateTable();
     }
 
     /**
@@ -39,40 +42,30 @@ public class ViewHospitals extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        hospTable = new javax.swing.JTable();
+        docTable = new javax.swing.JTable();
         titleLabel = new javax.swing.JLabel();
-        viewButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        hospTable.setModel(new javax.swing.table.DefaultTableModel(
+        docTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Name"
+                "First Name", "Last Name"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false
+                false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(hospTable);
+        jScrollPane1.setViewportView(docTable);
 
-        titleLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel.setText("View Hospitals");
-
-        viewButton.setText("View");
-        viewButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewButtonActionPerformed(evt);
-            }
-        });
+        titleLabel.setText("(Autofill)");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -81,26 +74,21 @@ public class ViewHospitals extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(385, 385, 385)
-                        .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(31, 31, 31)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 867, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(423, 423, 423)
-                        .addComponent(viewButton)))
-                .addContainerGap(36, Short.MAX_VALUE))
+                        .addGap(389, 389, 389)
+                        .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(80, 80, 80)
-                .addComponent(viewButton)
-                .addContainerGap(244, Short.MAX_VALUE))
+                .addGap(25, 25, 25)
+                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(64, 64, 64)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(357, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -123,38 +111,9 @@ public class ViewHospitals extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
-        // TODO add your handling code here:
-        int selectedIndex = hospTable.getSelectedRow();
-        if (selectedIndex < 0) {
-            JOptionPane.showMessageDialog(this, "Please select employee to view.", "Error", HEIGHT);
-        } else {
-            try {
-                String selectedHosp = String.valueOf(hospTable.getValueAt(selectedIndex, 0));
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
-
-//                String sql = "select * from doctorsdirectory where Name= '" + selectedHosp + "'";
-//                PreparedStatement ptst = conn.prepareStatement(sql);
-//                ResultSet rs = ptst.executeQuery();
-////            System.out.println(rs);
-//                rs.next();
-//                String name = selectrs.getString("Name");
-
-                UpdateHospital ad = new UpdateHospital(selectedHosp);
-                ad.setVisible(true);
-                this.dispose();
-                conn.close();
-
-            } catch (Exception e) {
-//                JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
-                System.out.println(e);
-            }}
-    }//GEN-LAST:event_viewButtonActionPerformed
-
     /**
-         * @param args the command line arguments
-         */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -169,45 +128,44 @@ public class ViewHospitals extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewHospitals.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewHospDoctors.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewHospitals.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewHospDoctors.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewHospitals.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewHospDoctors.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewHospitals.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewHospDoctors.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewHospitals().setVisible(true);
+                new ViewHospDoctors(name).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable hospTable;
+    private javax.swing.JTable docTable;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel titleLabel;
-    private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
 
     private void populateTable() {
-        HospitalDirectory allHosp = new HospitalDirectory();
-
+        
         try {
-            Object[] oConn = allHosp.getAllHospitals();
-            ResultSet rs = (ResultSet) oConn[0];
-            Connection conn = (Connection) oConn[1];
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
 
-            DefaultTableModel model = (DefaultTableModel) hospTable.getModel();
+            String sql = "select * from "+name.replace(' ', '_')+"_doctors";
+            PreparedStatement ptst = conn.prepareStatement(sql);
+            ResultSet rs = ptst.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) docTable.getModel();
             model.setRowCount(0);
             while (rs.next()) {
-                Object o[] = {rs.getString("Name")};
+                Object o[] = {rs.getString("FirstName"), rs.getString("LastName")};
                 model.addRow(o);
             }
             conn.close();
@@ -215,5 +173,6 @@ public class ViewHospitals extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.println(e);
         }
+        
     }
 }
