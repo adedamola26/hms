@@ -166,7 +166,7 @@ this.lastName = lastName;
             try {
                 String selectedEnc = String.valueOf(encHistoryTable.getValueAt(selectedIndex, 0));
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
                 String sql = "select * from id_"+id+"_enchistory where DateOfEnc = '" + selectedEnc + "'";
                 PreparedStatement ptst = conn.prepareStatement(sql);
@@ -198,7 +198,7 @@ this.lastName = lastName;
             try {
                 String selectedDoc = String.valueOf(encHistoryTable.getValueAt(selectedIndex, 0));
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
                 String sql = "delete from id_"+id+"_enchistory where DateOfEnc= '"+ selectedDoc +"'";
                 PreparedStatement ptst = conn.prepareStatement(sql);
@@ -273,7 +273,7 @@ this.lastName = lastName;
     private void populateTable() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
             String sql = "select * from id_" + id + "_enchistory";
             PreparedStatement ptst = conn.prepareStatement(sql);

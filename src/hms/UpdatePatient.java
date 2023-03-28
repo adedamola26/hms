@@ -181,7 +181,7 @@ public class UpdatePatient extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
             String firstName = firstNameField.getText();
             String lastName = lastNameField.getText();

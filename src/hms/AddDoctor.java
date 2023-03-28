@@ -539,6 +539,20 @@ public class AddDoctor extends javax.swing.JFrame {
         firstNameField.setText("");
         lastNameField.setText("");
         emailField.setText("");
+        ageField.setText("");
+        cellNumField.setText("");
+        addressField.setText("");
+        cityField.setText("");
+        specializationField.setText("");
+        usernameField.setText("");
+        newDoc.setBloodGroup(String.valueOf(bloodBox.getSelectedItem()));
+        newDoc.setEmployer(String.valueOf(employerBox.getSelectedItem()));
+        newDoc.setStartDate(dateChooser.getDate());
+        newDoc.setAddress(addressField.getText());
+        newDoc.setCity(cityField.getText());
+        newDoc.setSpecialization(specializationField.getText());
+        newDoc.setUsername(usernameField.getText());
+        newDoc.setPassword(passwordField.getText());
     }
 
     private void getAllHospitals() {

@@ -158,7 +158,7 @@ this.lastName = lastName;
         // TODO add your handling code here:
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
             String dateOfEnc = dateOfEncField.getText();
             String complaint = complaintField.getText();

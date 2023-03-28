@@ -33,7 +33,7 @@ public class DoctorDirectory {
         Object[] oConn = new Object[3];
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
             String sql = "select * from doctorsdirectory";
 
@@ -60,7 +60,7 @@ public class DoctorDirectory {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
             String sql = "insert into doctorsdirectory "
                     + "(FirstName,LastName,Employer,Age,Gender,CellNumber,"
@@ -96,13 +96,28 @@ public class DoctorDirectory {
             rs.next();
             String id = rs.getString("ID");
 
-            String sql2 = "insert into " + aDoctor.getEmployer().replace(' ', '_') + "_doctors values (?,?,?)";
+            String sql2
+                    = "insert into " + aDoctor.getEmployer().replace(' ', '_') + "_doctors"
+                    + "(ID,FirstName,LastName,Age,Gender,CellNumber,"
+                    + "Email,BloodGroup,StartDate,Address,City,Specialization,"
+                    + "Username,Password)"
+                    + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement ptst2 = conn.prepareStatement(sql2);
 
-            ptst2.setString(1, id);
-
+            ptst2.setString(1, aDoctor.getId());
             ptst2.setString(2, aDoctor.getFirstName());
             ptst2.setString(3, aDoctor.getLastName());
+            ptst2.setString(4, String.valueOf(aDoctor.getAge()));
+            ptst2.setString(5, aDoctor.getGender());
+            ptst2.setString(6, String.valueOf(aDoctor.getCellNum()));
+            ptst2.setString(7, aDoctor.getEmail());
+            ptst2.setString(8, aDoctor.getBloodGroup());
+            ptst2.setString(9, dt);
+            ptst2.setString(10, aDoctor.getAddress());
+            ptst2.setString(11, aDoctor.getCity());
+            ptst2.setString(12, aDoctor.getSpecialization());
+            ptst2.setString(13, aDoctor.getUsername());
+            ptst2.setString(14, aDoctor.getPassword());
 
             ptst2.executeUpdate();
 
@@ -118,7 +133,7 @@ public class DoctorDirectory {
         try {
 
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
             String sql = "delete from doctorsdirectory where ID= '" + id + "'";
             PreparedStatement ptst = conn.prepareStatement(sql);
@@ -138,7 +153,7 @@ public class DoctorDirectory {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
             DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
             String dt = fmt.format(updatedDoctor.getStartDate());
@@ -178,7 +193,7 @@ public class DoctorDirectory {
             ptst.execute();
 
             if (formerDoctor.getEmployer().equals(employer)) {
-                String sql2 = "update  " + employer.replace(' ', '_') + "_doctors "
+                String sql2 = "update " + employer.replace(' ', '_') + "_doctors "
                         + "set FirstName = '" + firstName
                         + "', LastName = '" + lastName
                         + "', Employer = '" + employer
@@ -198,6 +213,8 @@ public class DoctorDirectory {
                 ptst2.executeUpdate();
             } else {
                 String sql2 = "delete from " + formerDoctor.getEmployer().replace(' ', '_') + "_doctors where ID= '" + id + "'";
+//                System.out.println(formerDoctor.getEmployer());
+//                System.out.println(sql2);
                 PreparedStatement ptst2 = conn.prepareStatement(sql2);
                 ptst2.executeUpdate();
 
@@ -206,23 +223,23 @@ public class DoctorDirectory {
                         + "(ID,FirstName,LastName,Age,Gender,CellNumber,"
                         + "Email,BloodGroup,StartDate,Address,City,Specialization,"
                         + "Username,Password)"
-                        + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                        + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 PreparedStatement ptst3 = conn.prepareStatement(sql3);
 
-                ptst.setString(1, updatedDoctor.getId());
-                ptst.setString(2, updatedDoctor.getFirstName());
-                ptst.setString(3, updatedDoctor.getLastName());
-                ptst.setString(4, String.valueOf(updatedDoctor.getAge()));
-                ptst.setString(5, updatedDoctor.getGender());
-                ptst.setString(6, String.valueOf(updatedDoctor.getCellNum()));
-                ptst.setString(7, updatedDoctor.getEmail());
-                ptst.setString(8, updatedDoctor.getBloodGroup());
-                ptst.setString(9, dt);
-                ptst.setString(10, updatedDoctor.getAddress());
-                ptst.setString(11, updatedDoctor.getCity());
-                ptst.setString(12, updatedDoctor.getSpecialization());
-                ptst.setString(13, updatedDoctor.getUsername());
-                ptst.setString(14, updatedDoctor.getPassword());
+                ptst3.setString(1, updatedDoctor.getId());
+                ptst3.setString(2, updatedDoctor.getFirstName());
+                ptst3.setString(3, updatedDoctor.getLastName());
+                ptst3.setString(4, String.valueOf(updatedDoctor.getAge()));
+                ptst3.setString(5, updatedDoctor.getGender());
+                ptst3.setString(6, String.valueOf(updatedDoctor.getCellNum()));
+                ptst3.setString(7, updatedDoctor.getEmail());
+                ptst3.setString(8, updatedDoctor.getBloodGroup());
+                ptst3.setString(9, dt);
+                ptst3.setString(10, updatedDoctor.getAddress());
+                ptst3.setString(11, updatedDoctor.getCity());
+                ptst3.setString(12, updatedDoctor.getSpecialization());
+                ptst3.setString(13, updatedDoctor.getUsername());
+                ptst3.setString(14, updatedDoctor.getPassword());
 
                 ptst3.executeUpdate();
             }

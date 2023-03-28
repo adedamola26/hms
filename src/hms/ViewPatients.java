@@ -201,7 +201,7 @@ public class ViewPatients extends javax.swing.JFrame {
             try {
                 String selectedDoc = String.valueOf(patientsTable.getValueAt(selectedIndex, 0));
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
                 String sql = "delete from patientsdirectory where ID= '"+ selectedDoc +"'";
                 PreparedStatement ptst = conn.prepareStatement(sql);
@@ -231,7 +231,7 @@ public class ViewPatients extends javax.swing.JFrame {
             try {
                 String selectedDoc = String.valueOf(patientsTable.getValueAt(selectedIndex, 0));
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
                 String sql = "select * from patientsdirectory where ID= '"+ selectedDoc +"'";
                 PreparedStatement ptst = conn.prepareStatement(sql);
@@ -311,7 +311,7 @@ public class ViewPatients extends javax.swing.JFrame {
     private void populateTable() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
             String sql = "select * from patientsdirectory";
             PreparedStatement ptst = conn.prepareStatement(sql);

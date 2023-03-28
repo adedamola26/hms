@@ -157,7 +157,7 @@ populateTable();
         
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
             String sql = "select * from "+name.replace(' ', '_')+"_doctors";
             PreparedStatement ptst = conn.prepareStatement(sql);

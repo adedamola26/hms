@@ -2,20 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package data;
+package model;
 
 /**
  *
  * @author adeda
  */
-public class Hospital {
-    
+public class Community {
+
     private String name;
-//    private String address;
-//    private String servicesProvided;
-//    private Long cellNum;
-//    private String id;
-//    private String openingHours; // TODO change data type, add closing hours
+    private HospitalDirectory allHospitals;
+
+    public HospitalDirectory getAllHospitals() {
+        return allHospitals;
+    }
+
+    public void setAllHospitals(HospitalDirectory allHospitals) {
+        this.allHospitals = allHospitals;
+    }
 
     public String getName() {
         return name;
@@ -24,6 +28,10 @@ public class Hospital {
     public void setName(String name) {
         this.name = name;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
 }

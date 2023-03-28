@@ -132,7 +132,7 @@ public class ViewHospitals extends javax.swing.JFrame {
             try {
                 String selectedHosp = String.valueOf(hospTable.getValueAt(selectedIndex, 0));
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
 //                String sql = "select * from doctorsdirectory where Name= '" + selectedHosp + "'";
 //                PreparedStatement ptst = conn.prepareStatement(sql);

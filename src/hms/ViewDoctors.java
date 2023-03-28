@@ -187,7 +187,7 @@ public class ViewDoctors extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please select employee to delete.", "Error", HEIGHT);
         } else {
             String docID = String.valueOf(docTable.getValueAt(selectedIndex, 0));
-            String docEmp = String.valueOf(docTable.getValueAt(selectedIndex, 3));
+            String docEmp = String.valueOf(docTable.getValueAt(selectedIndex, 4));
             allDocs.removeDoctor(docID, docEmp);
             populateTable();
         }
@@ -204,7 +204,7 @@ public class ViewDoctors extends javax.swing.JFrame {
                 Doctor selectedDoc = new Doctor();
 //                String selectedDoc = String.valueOf(docTable.getValueAt(selectedIndex, 0));
 //                Class.forName("com.mysql.cj.jdbc.Driver");
-//                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "root");
+//                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 //
 //                String sql = "select * from doctorsdirectory where ID= '" + selectedDoc + "'";
 //                PreparedStatement ptst = conn.prepareStatement(sql);
