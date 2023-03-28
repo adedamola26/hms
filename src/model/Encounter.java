@@ -67,5 +67,10 @@ public class Encounter {
         this.attendingDoc = attendingDoc;
     }
 
+    @Override
+    public String toString() {
+        return String.valueOf(complaint);
+    }
+
     
 }

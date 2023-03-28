@@ -4,6 +4,7 @@
  */
 package view.doctor;
 
+import java.awt.CardLayout;
 import static java.awt.event.KeyEvent.VK_BACK_SPACE;
 import static java.awt.event.KeyEvent.VK_DELETE;
 import static java.awt.image.ImageObserver.HEIGHT;
@@ -32,10 +33,11 @@ public class RecordEncounter extends javax.swing.JPanel {
     CityDirectory allCities;
     Doctor attendingDoctor;
     Patient aPatient;
-    MainSystem mainSystem;
+    private MainSystem mainSystem;
 
     public RecordEncounter(MainSystem mainSystem) {
         initComponents();
+        this.mainSystem = mainSystem;
         this.aPanel = mainSystem.getaPanel();
         this.attendingDoctor = mainSystem.getADoctor();
         this.allCities = mainSystem.getAllCities();
@@ -210,17 +212,15 @@ public class RecordEncounter extends javax.swing.JPanel {
             encounter.setPrescription(prescriptionField.getText());
             encounter.setVitalSigns(vitalSign);
             encounter.setVisitDate(dateChooser.getDate());
-            
             allEncounters.addEncounter(encounter);
-            
             aPatient.setAllEncounter(allEncounters);
             
             JOptionPane.showMessageDialog(aPanel, "Encounter Saved Successfully.", "Success", HEIGHT);
 
-//            RecordEncounter recordEncounter = new RecordEncounter(mainSystem);
-//            aPanel.add(recordEncounter);
-//            CardLayout layout = (CardLayout) aPanel.getLayout();
-//            layout.next(aPanel);
+            ViewEncounters viewEncounter = new ViewEncounters(mainSystem);
+            aPanel.add(viewEncounter);
+            CardLayout layout = (CardLayout) aPanel.getLayout();
+            layout.next(aPanel);
         }
 
     }//GEN-LAST:event_saveButtonActionPerformed
