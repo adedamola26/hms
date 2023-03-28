@@ -14,6 +14,10 @@ public class PatientDirectory {
 
     private ArrayList<Patient> allPatients;
 
+    public PatientDirectory() {
+        this.allPatients = new ArrayList<Patient>();
+    }
+
     public ArrayList<Patient> getAllPatients() {
         return allPatients;
     }

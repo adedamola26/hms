@@ -6,6 +6,7 @@ package view.admin;
 
 import java.awt.CardLayout;
 import javax.swing.JPanel;
+import model.MainSystem;
 
 /**
  *
@@ -16,11 +17,11 @@ public class AdminLogin extends javax.swing.JPanel {
     /**
      * Creates new form AdminLogin
      */
-        private JPanel workPanel;
+        private MainSystem mainSystem;
 
-    public AdminLogin(JPanel aPanel) {
+    public AdminLogin(MainSystem mainSystem) {
         initComponents();
-        this.workPanel = aPanel;
+        this.mainSystem = mainSystem;
     }
 
     /**

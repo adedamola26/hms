@@ -6,7 +6,8 @@ package view.main;
 
 import view.admin.AdminLogin;
 import java.awt.CardLayout;
-import model.CityDirectory;
+import model.MainSystem;
+import view.doctor.DoctorLogin;
 import view.patients.SearchHospital;
 
 /**
@@ -18,11 +19,13 @@ public class MainScreen extends javax.swing.JFrame {
     /**
      * Creates new form MainScreen
      */
-    CityDirectory allCities;
+    
+    MainSystem mainSystem;
 
     public MainScreen() {
         initComponents();
-        this.allCities = new CityDirectory();
+        this.mainSystem = new MainSystem();
+        mainSystem.setaPanel(bottomPanel);
     }
 
     /**
@@ -132,7 +135,7 @@ public class MainScreen extends javax.swing.JFrame {
     private void adminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminButtonActionPerformed
         // TODO add your handling code here:
 
-        AdminLogin adminPanel = new AdminLogin(bottomPanel);
+        AdminLogin adminPanel = new AdminLogin(mainSystem);
         bottomPanel.add(adminPanel);
         CardLayout layout = (CardLayout) bottomPanel.getLayout();
         layout.next(bottomPanel);
@@ -140,11 +143,15 @@ public class MainScreen extends javax.swing.JFrame {
 
     private void doctorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doctorButtonActionPerformed
         // TODO add your handling code here:
+        DoctorLogin doctorLogin = new DoctorLogin(mainSystem);
+        bottomPanel.add(doctorLogin);
+        CardLayout layout = (CardLayout) bottomPanel.getLayout();
+        layout.next(bottomPanel);
     }//GEN-LAST:event_doctorButtonActionPerformed
 
     private void patientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientButtonActionPerformed
         // TODO add your handling code here:
-        SearchHospital searchHospital = new SearchHospital(bottomPanel, allCities);
+        SearchHospital searchHospital = new SearchHospital(mainSystem);
         bottomPanel.add(searchHospital);
         CardLayout layout = (CardLayout) bottomPanel.getLayout();
         layout.next(bottomPanel);

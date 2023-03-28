@@ -81,9 +81,15 @@ public class CityDirectory {
                     Doctor newDoctor1 = new Doctor();
                     newDoctor1.setFirstName("John");
                     newDoctor1.setLastName(co.getName());
+                    newDoctor1.setUsername("John");
+                    newDoctor1.setPassword(co.getName());
                     Doctor newDoctor2 = new Doctor();
                     newDoctor2.setFirstName("Jane");
-                    newDoctor2.setLastName(co.getName());
+                    newDoctor2.setUsername("Jane");
+
+                    newDoctor2.setLastName(city.getName());
+                    newDoctor2.setPassword(city.getName());
+
                     allDoctors.addDoctor(newDoctor1);
                     allDoctors.addDoctor(newDoctor2);
                     h.setAllDoctors(allDoctors);

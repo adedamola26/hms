@@ -4,16 +4,15 @@
  */
 package view.patients;
 
-import javax.swing.JPanel;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import model.City;
-import model.CityDirectory;
 import model.Community;
 import model.CommunityDirectory;
 import model.Hospital;
 import model.HospitalDirectory;
+import model.MainSystem;
 
 /**
  *
@@ -24,13 +23,14 @@ public class SearchHospital extends javax.swing.JPanel {
     /**
      * Creates new form SearchHospital
      */
-    private JPanel aPanel;
-    private CityDirectory allCities;
+            private MainSystem mainSystem;
 
-    public SearchHospital(JPanel aPanel, CityDirectory allCities) {
+
+    public SearchHospital(MainSystem mainSystem) {
         initComponents();
-        this.aPanel = aPanel;
-        this.allCities = allCities;
+                this.mainSystem = mainSystem;
+
+        
         populateCityMenu();
         populateTable();
     }
@@ -109,7 +109,7 @@ public class SearchHospital extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(294, 294, 294)
+                .addGap(291, 291, 291)
                 .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
@@ -209,7 +209,7 @@ public class SearchHospital extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void populateCityMenu() {
-        for (City c : allCities.getAllCities()) {
+        for (City c : mainSystem.getAllCities().getAllCities()) {
             cityMenu.addItem(c);
         }
     }
@@ -222,18 +222,9 @@ public class SearchHospital extends javax.swing.JPanel {
         HospitalDirectory hospitals = community.getAllHospitals();
         for (Hospital h : hospitals.getAllHospitals()) {
             Object[] rows = new Object[2];
-//            DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-//            String staDate = fmt.format(u.getStartDate());
             rows[0] = h.getName();
             rows[1] = h.getAddress();
-//            rows[2] = u.getAge();
-//            rows[3] = u.getGender();
-//            rows[4] = staDate;
-//            rows[5] = u.getLevel();
-//            rows[6] = u.getCellNum();
-//            rows[7] = u.getEmail();
             model.addRow(rows);
-//            clearFields();
         }
     }
 }

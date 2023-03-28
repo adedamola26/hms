@@ -4,7 +4,6 @@
  */
 package model;
 
-import data.*;
 
 /**
  *
@@ -14,33 +13,33 @@ public class VitalSign {
 
     private float temperature;
     private int pulseRate;
-    private int respRate;
-    private int systolicPressure;
-    private int diastolicPressure;
+//    private int respRate;
+//    private int systolicPressure;
+//    private int diastolicPressure;
 
-    public int getRespRate() {
-        return respRate;
-    }
-
-    public void setRespRate(int respRate) {
-        this.respRate = respRate;
-    }
-
-    public int getSystolicPressure() {
-        return systolicPressure;
-    }
-
-    public void setSystolicPressure(int systolicPressure) {
-        this.systolicPressure = systolicPressure;
-    }
-
-    public int getDiastolicPressure() {
-        return diastolicPressure;
-    }
-
-    public void setDiastolicPressure(int diastolicPressure) {
-        this.diastolicPressure = diastolicPressure;
-    }
+//    public int getRespRate() {
+//        return respRate;
+//    }
+//
+//    public void setRespRate(int respRate) {
+//        this.respRate = respRate;
+//    }
+//
+//    public int getSystolicPressure() {
+//        return systolicPressure;
+//    }
+//
+//    public void setSystolicPressure(int systolicPressure) {
+//        this.systolicPressure = systolicPressure;
+//    }
+//
+//    public int getDiastolicPressure() {
+//        return diastolicPressure;
+//    }
+//
+//    public void setDiastolicPressure(int diastolicPressure) {
+//        this.diastolicPressure = diastolicPressure;
+//    }
 
     public float getTemperature() {
         return temperature;
