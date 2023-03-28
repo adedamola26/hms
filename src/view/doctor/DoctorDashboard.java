@@ -161,7 +161,7 @@ public class DoctorDashboard extends javax.swing.JPanel {
         JPanel freeLayoutPanel = mainSystem.getFreePanel();
         Component[] components = freeLayoutPanel.getComponents();
         for (Component component : components) {
-            if (component.getName().equals("adminButton") | component.getName().equals("patientButton")) {
+            if (component.getName().equals("doctorButton") | component.getName().equals("adminButton") | component.getName().equals("patientButton")) {
                 JButton myButton = (JButton) component;
                 myButton.setEnabled(false);
             }
@@ -172,7 +172,7 @@ public class DoctorDashboard extends javax.swing.JPanel {
         JPanel freeLayoutPanel = mainSystem.getFreePanel();
         Component[] components = freeLayoutPanel.getComponents();
         for (Component component : components) {
-            if (component.getName().equals("adminButton") | component.getName().equals("patientButton")) {
+            if (component.getName().equals("doctorButton") | component.getName().equals("adminButton") | component.getName().equals("patientButton")) {
                 JButton myButton = (JButton) component;
                 myButton.setEnabled(true);
             }
