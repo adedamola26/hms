@@ -4,6 +4,7 @@
  */
 package model;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
@@ -17,6 +18,8 @@ public class MainSystem {
     Doctor aDoctor;
     Patient aPatient;
     PatientDirectory allPatients;
+    JFrame aFrame;
+    JPanel freePanel;
 
     public MainSystem() {
         this.aPanel = new JPanel();
@@ -24,7 +27,8 @@ public class MainSystem {
         this.aDoctor = new Doctor();
         this.aPatient = new Patient();
         this.allPatients = new PatientDirectory();
-
+        this.aFrame = new JFrame();
+        this.freePanel = new JPanel();
     }
 
     public PatientDirectory getAllPatients() {
@@ -65,6 +69,22 @@ public class MainSystem {
 
     public void setaPatient(Patient aPatient) {
         this.aPatient = aPatient;
+    }
+
+    public JFrame getaFrame() {
+        return aFrame;
+    }
+
+    public void setaFrame(JFrame aFrame) {
+        this.aFrame = aFrame;
+    }
+
+    public JPanel getFreePanel() {
+        return freePanel;
+    }
+
+    public void setFreePanel(JPanel freePanel) {
+        this.freePanel = freePanel;
     }
 
 }

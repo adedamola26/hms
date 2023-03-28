@@ -24,7 +24,6 @@ public class AddPatient extends javax.swing.JPanel {
     /**
      * Creates new form AddPatient
      */
-    PatientDirectory allPatients;
     JPanel aPanel;
     CityDirectory allCities;
     Doctor attendingDoctor;
@@ -33,8 +32,6 @@ public class AddPatient extends javax.swing.JPanel {
     public AddPatient(MainSystem mainSystem) {
         initComponents();
         this.mainSystem = mainSystem;
-
-        this.allPatients = new PatientDirectory();
         this.aPanel = mainSystem.getaPanel();
         this.attendingDoctor = mainSystem.getADoctor();
         this.allCities = mainSystem.getAllCities();
@@ -181,11 +178,13 @@ public class AddPatient extends javax.swing.JPanel {
         // TODO add your handling code here:
         if (validateSave()) {
             Patient newPatient = new Patient();
+            PatientDirectory allPatients = mainSystem.getAllPatients();
             newPatient.setFirstName(firstNameField.getText());
             newPatient.setLastName(lastNameField.getText());
             newPatient.setGender(String.valueOf(genderMenu.getSelectedItem()));
             newPatient.setBloodGroup(String.valueOf(bloodMenu.getSelectedItem()));
             allPatients.addPatient(newPatient);
+
             mainSystem.setAllPatients(allPatients);
             mainSystem.setaPatient(newPatient);
             JOptionPane.showMessageDialog(aPanel, "Patient Created Successfully.", "Success", HEIGHT);

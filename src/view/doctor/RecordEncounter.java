@@ -34,6 +34,7 @@ public class RecordEncounter extends javax.swing.JPanel {
     Doctor attendingDoctor;
     Patient aPatient;
     private MainSystem mainSystem;
+    private String previousCard;
 
     public RecordEncounter(MainSystem mainSystem) {
         initComponents();
@@ -42,6 +43,7 @@ public class RecordEncounter extends javax.swing.JPanel {
         this.attendingDoctor = mainSystem.getADoctor();
         this.allCities = mainSystem.getAllCities();
         this.aPatient = mainSystem.getaPatient();
+        this.previousCard = String.valueOf(aPanel.findComponentAt(0, 0));
     }
 
     /**
@@ -140,7 +142,7 @@ public class RecordEncounter extends javax.swing.JPanel {
                                         .addGap(9, 9, 9))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(82, 82, 82)
-                                        .addComponent(temperatureField))))
+                                        .addComponent(temperatureField, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(98, 98, 98)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -151,9 +153,9 @@ public class RecordEncounter extends javax.swing.JPanel {
                                         .addComponent(prescriptionField)
                                         .addComponent(pulseField))))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(296, 296, 296)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(360, Short.MAX_VALUE))
+                .addContainerGap(359, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(396, 396, 396)
                 .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -201,26 +203,42 @@ public class RecordEncounter extends javax.swing.JPanel {
         if (validateSave()) {
             Encounter encounter = new Encounter();
             VitalSign vitalSign = new VitalSign();
-            EncounterHistory allEncounters = new EncounterHistory();
-            
+            EncounterHistory allEncounters = aPatient.getAllEncounter();
+
             vitalSign.setPulseRate(Integer.parseInt(pulseField.getText()));
             vitalSign.setTemperature(Float.parseFloat(temperatureField.getText()));
-            
-            encounter.setAttendingDoc(attendingDoctor.getFirstName());
+
+            encounter.setAttendingDoc(attendingDoctor.getFirstName() + " " + attendingDoctor.getLastName());
             encounter.setComplaint(complaintField.getText());
             encounter.setDiagnosis(diagnosisField.getText());
             encounter.setPrescription(prescriptionField.getText());
             encounter.setVitalSigns(vitalSign);
             encounter.setVisitDate(dateChooser.getDate());
-            allEncounters.addEncounter(encounter);
-            aPatient.setAllEncounter(allEncounters);
-            
+            try {
+                allEncounters.addEncounter(encounter);
+                aPatient.setAllEncounter(allEncounters);
+
+            } catch (NullPointerException e) {
+                EncounterHistory newAllEncounters = new EncounterHistory();
+                newAllEncounters.addEncounter(encounter);
+                aPatient.setAllEncounter(newAllEncounters);
+            }
+
+            mainSystem.setaPatient(aPatient);
             JOptionPane.showMessageDialog(aPanel, "Encounter Saved Successfully.", "Success", HEIGHT);
 
-            ViewEncounters viewEncounter = new ViewEncounters(mainSystem);
-            aPanel.add(viewEncounter);
-            CardLayout layout = (CardLayout) aPanel.getLayout();
-            layout.next(aPanel);
+            if (previousCard.contains("AddPatient")) {
+                DoctorDashboard dashboard = new DoctorDashboard(mainSystem);
+                aPanel.add(dashboard);
+                CardLayout layout = (CardLayout) aPanel.getLayout();
+                layout.next(aPanel);
+            } else {
+                ViewEncounters viewEncounter = new ViewEncounters(mainSystem);
+                aPanel.add(viewEncounter);
+                CardLayout layout = (CardLayout) aPanel.getLayout();
+                layout.next(aPanel);
+            }
+
         }
 
     }//GEN-LAST:event_saveButtonActionPerformed

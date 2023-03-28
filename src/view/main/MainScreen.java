@@ -19,13 +19,15 @@ public class MainScreen extends javax.swing.JFrame {
     /**
      * Creates new form MainScreen
      */
-    
     MainSystem mainSystem;
-
+    
     public MainScreen() {
         initComponents();
         this.mainSystem = new MainSystem();
         mainSystem.setaPanel(bottomPanel);
+        setButtonNames();
+        mainSystem.setFreePanel(topPanel);
+        
     }
 
     /**
@@ -201,4 +203,11 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel;
     private javax.swing.JPanel topPanel;
     // End of variables declaration//GEN-END:variables
+
+    private void setButtonNames() {
+        titleLabel.setName("titleLabel");
+        adminButton.setName("adminButton");
+        doctorButton.setName("doctorButton");
+        patientButton.setName("patientButton");
+    }
 }
