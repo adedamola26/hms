@@ -244,7 +244,7 @@ public class ViewPatients extends javax.swing.JPanel {
         } else {
             updateButton.setEnabled(true);
             viewEncountersButton.setEnabled(true);
-                        backButton.setEnabled(false);
+            backButton.setEnabled(false);
 
             patientsTable.setRowSelectionAllowed(false);
             Patient selectedPatient = (Patient) patientsTable.getValueAt(selectedIndex, 0);
@@ -279,10 +279,18 @@ public class ViewPatients extends javax.swing.JPanel {
 
     private void lastNameFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lastNameFieldFocusLost
         // TODO add your handling code here:
+        errorLabel.setText("");
     }//GEN-LAST:event_lastNameFieldFocusLost
 
     private void lastNameFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lastNameFieldKeyPressed
         // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if ((!Character.isLetter(c)) && (!Character.isWhitespace(c)) && (c != VK_BACK_SPACE) && (c != VK_DELETE)) {
+            lastNameField.setEditable(false);
+            errorLabel.setText("Please enter letters only.");
+        } else {
+            lastNameField.setEditable(true);
+        }
     }//GEN-LAST:event_lastNameFieldKeyPressed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
@@ -303,7 +311,7 @@ public class ViewPatients extends javax.swing.JPanel {
             populateTable();
             updateButton.setEnabled(false);
             viewEncountersButton.setEnabled(false);
-                                    backButton.setEnabled(true);
+            backButton.setEnabled(true);
 
             patientsTable.setRowSelectionAllowed(true);
             clearFields();
@@ -321,10 +329,10 @@ public class ViewPatients extends javax.swing.JPanel {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
-            DoctorDashboard dashboard = new DoctorDashboard(mainSystem);
-            aPanel.add(dashboard);
-            CardLayout layout = (CardLayout) aPanel.getLayout();
-            layout.next(aPanel);
+        DoctorDashboard dashboard = new DoctorDashboard(mainSystem);
+        aPanel.add(dashboard);
+        CardLayout layout = (CardLayout) aPanel.getLayout();
+        layout.next(aPanel);
     }//GEN-LAST:event_backButtonActionPerformed
 
 

@@ -70,6 +70,8 @@ public class RecordEncounter extends javax.swing.JPanel {
         temperatureField = new javax.swing.JTextField();
         errorLabel = new javax.swing.JLabel();
         pulseField = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         titleLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -118,48 +120,58 @@ public class RecordEncounter extends javax.swing.JPanel {
             }
         });
 
+        jLabel1.setText("°C");
+
+        jLabel2.setText("bpm");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(396, 396, 396)
+                .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(246, 246, 246)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(complaintLabel)
-                            .addComponent(diagnosisLabel)
-                            .addComponent(prescriptionLabel)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(temperatureLabel)
                                     .addComponent(pulseLabel))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(107, 107, 107)
-                                        .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(9, 9, 9))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(82, 82, 82)
-                                        .addComponent(temperatureField, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE))))
+                                .addGap(107, 107, 107)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(dateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                                    .addComponent(temperatureField)
+                                    .addComponent(pulseField)))
+                            .addComponent(prescriptionLabel)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(diagnosisLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(diagnosisField, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addGap(98, 98, 98)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(errorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(prescriptionField, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(98, 98, 98)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(errorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(complaintField, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                                        .addComponent(diagnosisField, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(prescriptionField)
-                                        .addComponent(pulseField))))))
+                                .addComponent(complaintLabel)
+                                .addGap(130, 130, 130)
+                                .addComponent(complaintField, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(60, 60, 60))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(359, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(396, 396, 396)
-                .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(350, 350, 350))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,12 +185,14 @@ public class RecordEncounter extends javax.swing.JPanel {
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(temperatureLabel)
-                    .addComponent(temperatureField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(temperatureField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pulseLabel)
-                    .addComponent(pulseField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
+                    .addComponent(pulseField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(complaintLabel)
                     .addComponent(complaintField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -264,7 +278,7 @@ public class RecordEncounter extends javax.swing.JPanel {
 
     private void pulseFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pulseFieldFocusLost
         // TODO add your handling code here:
-        errorLabel.setText("");
+//        errorLabel.setText("");
     }//GEN-LAST:event_pulseFieldFocusLost
 
     private void pulseFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pulseFieldKeyPressed
@@ -290,6 +304,8 @@ public class RecordEncounter extends javax.swing.JPanel {
     private javax.swing.JTextField diagnosisField;
     private javax.swing.JLabel diagnosisLabel;
     private javax.swing.JLabel errorLabel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField prescriptionField;
     private javax.swing.JLabel prescriptionLabel;
     private javax.swing.JTextField pulseField;
@@ -309,8 +325,14 @@ public class RecordEncounter extends javax.swing.JPanel {
             if (temperatureField.getText().trim().equals("")) {
                 JOptionPane.showMessageDialog(aPanel, "Please enter patient's temperature", "Error", HEIGHT);
                 temperatureField.requestFocus();
+            } else if (Float.parseFloat(temperatureField.getText()) > 42 | Float.parseFloat(temperatureField.getText()) < 35) {
+                JOptionPane.showMessageDialog(aPanel, "Please enter temperature between 35°C and 42°C", "Error", HEIGHT);
+                temperatureField.requestFocus();
             } else if (pulseField.getText().trim().equals("")) {
                 JOptionPane.showMessageDialog(aPanel, "Please enter patient's pulse rate", "Error", HEIGHT);
+                pulseField.requestFocus();
+            } else if ((Integer.parseInt(pulseField.getText()) > 220) | (Integer.parseInt(pulseField.getText()) < 30)) {
+                JOptionPane.showMessageDialog(aPanel, "Please pulse rate between 30bpm and 220bpm", "Error", HEIGHT);
                 pulseField.requestFocus();
             } else if (complaintField.getText().trim().equals("")) {
                 JOptionPane.showMessageDialog(aPanel, "Please enter patient's complains", "Error", HEIGHT);

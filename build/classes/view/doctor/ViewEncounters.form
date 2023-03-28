@@ -54,6 +54,8 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="temperatureField" min="-2" pref="96" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="diagnosisLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="97" max="-2" attributes="0"/>
@@ -68,6 +70,8 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="pulseField" min="-2" pref="96" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="prescriptionLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
@@ -106,6 +110,7 @@
                   <Component id="diagnosisLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="temperatureField" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                   <Component id="diagnosisField" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -113,6 +118,7 @@
                   <Component id="prescriptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="pulseField" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                   <Component id="prescriptionField" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -281,6 +287,16 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateButtonActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#xb0;C"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="bpm"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
