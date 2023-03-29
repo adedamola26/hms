@@ -45,7 +45,7 @@ public class AddPatient extends javax.swing.JPanel {
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleLabel.setText("Add New Patient");
 
-        firstNameLabel.setText("First Name");
+        firstNameLabel.setText("Full Name:");
 
         firstNameLabel1.setText("City");
 
@@ -66,8 +66,8 @@ public class AddPatient extends javax.swing.JPanel {
                         .addGap(105, 105, 105)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(firstNameField)
-                            .addComponent(cityBox, 0, 115, Short.MAX_VALUE))))
-                .addContainerGap(365, Short.MAX_VALUE))
+                            .addComponent(cityBox, 0, 189, Short.MAX_VALUE))))
+                .addContainerGap(321, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
