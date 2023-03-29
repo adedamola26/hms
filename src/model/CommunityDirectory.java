@@ -31,7 +31,7 @@ public class CommunityDirectory {
         this.allCommunities.add(aCommunity);
     }
 
-    public void removeHospital(Community aCommunity) {
+    public void removeCommunity(Community aCommunity) {
         this.allCommunities.remove(aCommunity);
     }
 }

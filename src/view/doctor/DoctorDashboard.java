@@ -26,7 +26,7 @@ public class DoctorDashboard extends javax.swing.JPanel {
     CityDirectory allCities;
     Doctor attendingDoctor;
     private MainSystem mainSystem;
-    private JFrame aFrame;
+//    private JFrame aFrame;
 
     public DoctorDashboard(MainSystem mainSystem) {
         initComponents();
@@ -35,7 +35,7 @@ public class DoctorDashboard extends javax.swing.JPanel {
         this.allCities = mainSystem.getAllCities();
         this.attendingDoctor = mainSystem.getADoctor();
         titleLabel.setText("Welcome Dr. " + attendingDoctor.getFirstName());
-        this.aFrame = mainSystem.getaFrame();
+//        this.aFrame = mainSystem.getaFrame();
         disableIrrelevantButtons();
     }
 

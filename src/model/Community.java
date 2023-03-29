@@ -11,6 +11,7 @@ package model;
 public class Community {
 
     private String name;
+    private String postalCode;
     private HospitalDirectory allHospitals;
 
     public HospitalDirectory getAllHospitals() {
@@ -27,6 +28,14 @@ public class Community {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     @Override

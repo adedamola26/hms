@@ -31,6 +31,10 @@ public class CityDirectory {
         allCities.add(city);
     }
 
+    public void removeCity(City city) {
+        allCities.remove(city);
+    }
+
     public void inputDefault() {
         City newCity1 = new City();
         Object[] cities = new Object[2];
@@ -48,14 +52,21 @@ public class CityDirectory {
 
         newCity1.setName("Toronto");
         newCommunity11.setName("East York");
+        newCommunity11.setPostalCode("M6E3X1");
         newCommunity12.setName("North York");
+        newCommunity12.setPostalCode("M6E3X2");
+
         allCommunities1.addCommunity(newCommunity11);
         allCommunities1.addCommunity(newCommunity12);
         newCity1.setAllCommunities(allCommunities1);
 
         newCity2.setName("Hamilton");
         newCommunity21.setName("Bartonville");
+        newCommunity21.setPostalCode("M6E3X3");
+
         newCommunity22.setName("Blakely");
+        newCommunity22.setPostalCode("M6E3X4");
+
         allCommunities2.addCommunity(newCommunity21);
         allCommunities2.addCommunity(newCommunity22);
         newCity2.setAllCommunities(allCommunities2);

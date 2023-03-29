@@ -139,7 +139,7 @@ public class ViewPatients extends javax.swing.JPanel {
 
         errorLabel.setForeground(new java.awt.Color(255, 51, 51));
 
-        viewEncountersButton.setText("VIew Encounters");
+        viewEncountersButton.setText("View Encounters");
         viewEncountersButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewEncountersButtonActionPerformed(evt);

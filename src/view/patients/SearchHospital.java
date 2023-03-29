@@ -23,14 +23,12 @@ public class SearchHospital extends javax.swing.JPanel {
     /**
      * Creates new form SearchHospital
      */
-            private MainSystem mainSystem;
-
+    private MainSystem mainSystem;
 
     public SearchHospital(MainSystem mainSystem) {
         initComponents();
-                this.mainSystem = mainSystem;
+        this.mainSystem = mainSystem;
 
-        
         populateCityMenu();
         populateTable();
     }
@@ -155,10 +153,9 @@ public class SearchHospital extends javax.swing.JPanel {
 
     private void communityMenuItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_communityMenuItemStateChanged
         // TODO add your handling code here:
-        try{
+        try {
             populateTable();
-        }catch(NullPointerException e){
-            
+        } catch (NullPointerException e) {
         }
     }//GEN-LAST:event_communityMenuItemStateChanged
 

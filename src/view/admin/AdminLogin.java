@@ -5,6 +5,8 @@
 package view.admin;
 
 import java.awt.CardLayout;
+import static java.awt.image.ImageObserver.HEIGHT;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import model.MainSystem;
 
@@ -17,11 +19,13 @@ public class AdminLogin extends javax.swing.JPanel {
     /**
      * Creates new form AdminLogin
      */
-        private MainSystem mainSystem;
+    private MainSystem mainSystem;
+    private JPanel aPanel;
 
     public AdminLogin(MainSystem mainSystem) {
         initComponents();
         this.mainSystem = mainSystem;
+        this.aPanel = mainSystem.getaPanel();
     }
 
     /**
@@ -37,9 +41,9 @@ public class AdminLogin extends javax.swing.JPanel {
         usernameLabel = new javax.swing.JLabel();
         passwordLabel = new javax.swing.JLabel();
         usernameField = new javax.swing.JTextField();
-        passwordField = new javax.swing.JTextField();
         adminBox = new javax.swing.JComboBox<>();
         loginButton = new javax.swing.JButton();
+        passwordField = new javax.swing.JPasswordField();
 
         titleLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -74,14 +78,16 @@ public class AdminLogin extends javax.swing.JPanel {
                                 .addComponent(usernameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
                                 .addComponent(passwordLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(usernameField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(passwordField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(usernameField, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                .addComponent(passwordField))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(344, 344, 344)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(adminBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(adminBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(407, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -99,21 +105,23 @@ public class AdminLogin extends javax.swing.JPanel {
                     .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
                 .addComponent(adminBox, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGap(40, 40, 40)
                 .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(218, Short.MAX_VALUE))
+                .addContainerGap(211, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
 
-        if ((usernameField.equals("admin")) & (passwordField.equals("admin"))
+        if ((usernameField.getText().equals("system")) & (passwordField.getText().equals("admin"))
                 & String.valueOf(adminBox.getSelectedItem()).equals("System Admin")) {
-//            AdminLogin adminPanel = new AdminLogin();
-//            bottomPanel.add(adminPanel);
-//            CardLayout layout = (CardLayout) bottomPanel.getLayout();
-//            layout.next(bottomPanel);
+            SystemAdminDashboard sAPanel = new SystemAdminDashboard(mainSystem);
+            aPanel.add(sAPanel);
+            CardLayout layout = (CardLayout) aPanel.getLayout();
+            layout.next(aPanel);
+        }else {
+            JOptionPane.showMessageDialog(aPanel, "Please enter correct credentials.", "Wrong credentials", HEIGHT);
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
@@ -121,7 +129,7 @@ public class AdminLogin extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> adminBox;
     private javax.swing.JButton loginButton;
-    private javax.swing.JTextField passwordField;
+    private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JTextField usernameField;

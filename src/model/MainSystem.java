@@ -13,13 +13,14 @@ import javax.swing.JPanel;
  */
 public class MainSystem {
 
-    JPanel aPanel;
-    CityDirectory allCities;
-    Doctor aDoctor;
-    Patient aPatient;
-    PatientDirectory allPatients;
-    JFrame aFrame;
-    JPanel freePanel;
+    private JPanel aPanel;
+    private CityDirectory allCities;
+    private Doctor aDoctor;
+    private Patient aPatient;
+    private PatientDirectory allPatients;
+    private JPanel freePanel;
+    private Community aCommunity;
+    private City aCity;
 
     public MainSystem() {
         this.aPanel = new JPanel();
@@ -27,7 +28,6 @@ public class MainSystem {
         this.aDoctor = new Doctor();
         this.aPatient = new Patient();
         this.allPatients = new PatientDirectory();
-        this.aFrame = new JFrame();
         this.freePanel = new JPanel();
     }
 
@@ -71,20 +71,28 @@ public class MainSystem {
         this.aPatient = aPatient;
     }
 
-    public JFrame getaFrame() {
-        return aFrame;
-    }
-
-    public void setaFrame(JFrame aFrame) {
-        this.aFrame = aFrame;
-    }
-
     public JPanel getFreePanel() {
         return freePanel;
     }
 
     public void setFreePanel(JPanel freePanel) {
         this.freePanel = freePanel;
+    }
+
+    public Community getaCommunity() {
+        return aCommunity;
+    }
+
+    public void setaCommunity(Community aCommunity) {
+        this.aCommunity = aCommunity;
+    }
+
+    public City getaCity() {
+        return aCity;
+    }
+
+    public void setaCity(City aCity) {
+        this.aCity = aCity;
     }
 
 }
