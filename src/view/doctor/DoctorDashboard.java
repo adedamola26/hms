@@ -158,6 +158,7 @@ public class DoctorDashboard extends javax.swing.JPanel {
         JPanel freeLayoutPanel = mainSystem.getFreePanel();
         Component[] components = freeLayoutPanel.getComponents();
         for (Component component : components) {
+            System.out.println(component.getName());
             if (component.getName().equals("doctorButton") | component.getName().equals("adminButton") | component.getName().equals("patientButton")) {
                 JButton myButton = (JButton) component;
                 myButton.setEnabled(false);
