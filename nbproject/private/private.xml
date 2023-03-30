@@ -3,12 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/adeda/OneDrive/Documents/NEU%20COURSES/INFO5100/hms/src/view/doctor/ViewPatients.java</file>
-            <file>file:/C:/Users/adeda/OneDrive/Documents/NEU%20COURSES/INFO5100/hms/src/view/doctor/DoctorDashboard.java</file>
-            <file>file:/C:/Users/adeda/OneDrive/Documents/NEU%20COURSES/INFO5100/hms/src/view/admin/ViewCommunity.java</file>
+            <file>file:/C:/Users/adeda/OneDrive/Documents/NEU%20COURSES/INFO5100/hms/src/view/admin/ViewHospital.java</file>
             <file>file:/C:/Users/adeda/OneDrive/Documents/NEU%20COURSES/INFO5100/hms/src/view/admin/SystemAdminDashboard.java</file>
-            <file>file:/C:/Users/adeda/OneDrive/Documents/NEU%20COURSES/INFO5100/hms/src/view/admin/AdminLogin.java</file>
-            <file>file:/C:/Users/adeda/OneDrive/Documents/NEU%20COURSES/INFO5100/hms/src/view/main/MainScreen.java</file>
+            <file>file:/C:/Users/adeda/OneDrive/Documents/NEU%20COURSES/INFO5100/hms/src/view/admin/ViewCommunity.java</file>
         </group>
     </open-files>
 </project-private>

@@ -14,6 +14,7 @@ import model.Doctor;
 import model.MainSystem;
 import model.Patient;
 import model.PatientDirectory;
+import view.admin.CRUDPatient;
 
 /**
  *
@@ -28,6 +29,7 @@ public class AddPatient extends javax.swing.JPanel {
     CityDirectory allCities;
     Doctor attendingDoctor;
     private MainSystem mainSystem;
+    private String previousCard;
 
     public AddPatient(MainSystem mainSystem) {
         initComponents();
@@ -35,7 +37,8 @@ public class AddPatient extends javax.swing.JPanel {
         this.aPanel = mainSystem.getaPanel();
         this.attendingDoctor = mainSystem.getADoctor();
         this.allCities = mainSystem.getAllCities();
-//        validateSave();
+        this.previousCard = String.valueOf(aPanel.findComponentAt(0, 0));
+
     }
 
     /**
@@ -189,10 +192,17 @@ public class AddPatient extends javax.swing.JPanel {
             mainSystem.setaPatient(newPatient);
             JOptionPane.showMessageDialog(aPanel, "Patient Created Successfully.", "Success", HEIGHT);
 
-            RecordEncounter recordEncounter = new RecordEncounter(mainSystem);
-            aPanel.add(recordEncounter);
-            CardLayout layout = (CardLayout) aPanel.getLayout();
-            layout.next(aPanel);
+            if (previousCard.contains("CRUDPatient")) {
+                CRUDPatient crudPatient = new CRUDPatient(mainSystem);
+                aPanel.add(crudPatient);
+                CardLayout layout = (CardLayout) aPanel.getLayout();
+                layout.next(aPanel);
+            } else {
+                RecordEncounter recordEncounter = new RecordEncounter(mainSystem);
+                aPanel.add(recordEncounter);
+                CardLayout layout = (CardLayout) aPanel.getLayout();
+                layout.next(aPanel);
+            }
         }
 
 

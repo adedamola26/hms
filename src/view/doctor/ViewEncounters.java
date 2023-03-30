@@ -340,20 +340,24 @@ public class ViewEncounters extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) encounterTable.getModel();
         model.setRowCount(0);
         EncounterHistory allEncounters = mainSystem.getaPatient().getAllEncounter();
+        try {
+            for (Encounter e : allEncounters.getAllEncounters()) {
+                Object[] rows = new Object[5];
+                DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                String visitDate = fmt.format(e.getVisitDate());
 
-        for (Encounter e : allEncounters.getAllEncounters()) {
-            Object[] rows = new Object[5];
-            DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-            String visitDate = fmt.format(e.getVisitDate());
+                rows[0] = visitDate;
+                rows[1] = e.getAttendingDoc();
+                rows[2] = e;
+                rows[3] = e.getDiagnosis();
+                rows[4] = e.getPrescription();
 
-            rows[0] = visitDate;
-            rows[1] = e.getAttendingDoc();
-            rows[2] = e;
-            rows[3] = e.getDiagnosis();
-            rows[4] = e.getPrescription();
-
-            model.addRow(rows);
+                model.addRow(rows);
 //            clearFields();
+            }
+        } catch (NullPointerException e) {
+
         }
+
     }
 }

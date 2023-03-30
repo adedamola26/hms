@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package view.doctor;
+package view.admin;
 
+import view.doctor.*;
 import java.awt.CardLayout;
 import java.awt.Component;
 import javax.swing.JButton;
@@ -17,10 +18,10 @@ import model.MainSystem;
  *
  * @author adeda
  */
-public class DoctorDashboard extends javax.swing.JPanel {
+public class CRUDPatient extends javax.swing.JPanel {
 
     /**
-     * Creates new form DoctorDashboard
+     * Creates new form CRUDPatient
      */
     JPanel aPanel;
     CityDirectory allCities;
@@ -28,15 +29,15 @@ public class DoctorDashboard extends javax.swing.JPanel {
     private MainSystem mainSystem;
 //    private JFrame aFrame;
 
-    public DoctorDashboard(MainSystem mainSystem) {
+    public CRUDPatient(MainSystem mainSystem) {
         initComponents();
         this.mainSystem = mainSystem;
         this.aPanel = mainSystem.getaPanel();
         this.allCities = mainSystem.getAllCities();
         this.attendingDoctor = mainSystem.getADoctor();
-        titleLabel.setText("Welcome Dr. " + attendingDoctor.getFirstName());
+//        titleLabel.setText("Welcome Dr. " + attendingDoctor.getFirstName());
 //        this.aFrame = mainSystem.getaFrame();
-        disableIrrelevantButtons();
+//        disableIrrelevantButtons();
     }
 
     /**
@@ -48,24 +49,19 @@ public class DoctorDashboard extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        titleLabel = new javax.swing.JLabel();
         newPatientButton = new javax.swing.JButton();
         oldPatientButton = new javax.swing.JButton();
         choiceLabel = new javax.swing.JLabel();
-        logOutButton = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
 
-        titleLabel.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
-        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel.setText("Welcome, Doctor!");
-
-        newPatientButton.setText("New Patient");
+        newPatientButton.setText("Add Patient");
         newPatientButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newPatientButtonActionPerformed(evt);
             }
         });
 
-        oldPatientButton.setText("Existing Patient");
+        oldPatientButton.setText("View Patients");
         oldPatientButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 oldPatientButtonActionPerformed(evt);
@@ -76,10 +72,10 @@ public class DoctorDashboard extends javax.swing.JPanel {
         choiceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         choiceLabel.setText("Who do you want to attend to?");
 
-        logOutButton.setText("Log Out");
-        logOutButton.addActionListener(new java.awt.event.ActionListener() {
+        backButton.setText("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                logOutButtonActionPerformed(evt);
+                backButtonActionPerformed(evt);
             }
         });
 
@@ -88,28 +84,27 @@ public class DoctorDashboard extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(282, Short.MAX_VALUE)
                 .addComponent(newPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(112, 112, 112)
                 .addComponent(oldPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(318, 318, 318))
             .addGroup(layout.createSequentialGroup()
-                .addGap(303, 303, 303)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(choiceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(121, 121, 121)
-                .addComponent(logOutButton)
-                .addContainerGap(156, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(303, 303, 303)
+                        .addComponent(choiceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(logOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(68, 68, 68)
+                .addGap(38, 38, 38)
+                .addComponent(backButton)
+                .addGap(69, 69, 69)
                 .addComponent(choiceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -135,44 +130,42 @@ public class DoctorDashboard extends javax.swing.JPanel {
         layout.next(aPanel);
     }//GEN-LAST:event_oldPatientButtonActionPerformed
 
-    private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
-        DoctorLogin doctorLogin = new DoctorLogin(mainSystem);
-        aPanel.add(doctorLogin);
+        SystemAdminDashboard sAPanel = new SystemAdminDashboard(mainSystem);
+        aPanel.add(sAPanel);
         CardLayout layout = (CardLayout) aPanel.getLayout();
         layout.next(aPanel);
-        enableRelevantButtons();
-    }//GEN-LAST:event_logOutButtonActionPerformed
+    }//GEN-LAST:event_backButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backButton;
     private javax.swing.JLabel choiceLabel;
-    private javax.swing.JButton logOutButton;
     private javax.swing.JButton newPatientButton;
     private javax.swing.JButton oldPatientButton;
-    private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 
-    private void disableIrrelevantButtons() {
-
-        JPanel freeLayoutPanel = mainSystem.getFreePanel();
-        Component[] components = freeLayoutPanel.getComponents();
-        for (Component component : components) {
-            if (component.getName().equals("doctorButton") | component.getName().equals("adminButton") | component.getName().equals("patientButton")) {
-                JButton myButton = (JButton) component;
-                myButton.setEnabled(false);
-            }
-        }
-    }
-
-    private void enableRelevantButtons() {
-        JPanel freeLayoutPanel = mainSystem.getFreePanel();
-        Component[] components = freeLayoutPanel.getComponents();
-        for (Component component : components) {
-            if (component.getName().equals("doctorButton") | component.getName().equals("adminButton") | component.getName().equals("patientButton")) {
-                JButton myButton = (JButton) component;
-                myButton.setEnabled(true);
-            }
-        }
-    }
+//    private void disableIrrelevantButtons() {
+//
+//        JPanel freeLayoutPanel = mainSystem.getFreePanel();
+//        Component[] components = freeLayoutPanel.getComponents();
+//        for (Component component : components) {
+//            if (component.getName().equals("doctorButton") | component.getName().equals("adminButton") | component.getName().equals("patientButton")) {
+//                JButton myButton = (JButton) component;
+//                myButton.setEnabled(false);
+//            }
+//        }
+//    }
+//
+//    private void enableRelevantButtons() {
+//        JPanel freeLayoutPanel = mainSystem.getFreePanel();
+//        Component[] components = freeLayoutPanel.getComponents();
+//        for (Component component : components) {
+//            if (component.getName().equals("doctorButton") | component.getName().equals("adminButton") | component.getName().equals("patientButton")) {
+//                JButton myButton = (JButton) component;
+//                myButton.setEnabled(true);
+//            }
+//        }
+//    }
 }

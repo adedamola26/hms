@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import model.MainSystem;
 import model.Patient;
 import model.PatientDirectory;
+import view.admin.CRUDPatient;
 
 /**
  *
@@ -25,6 +26,7 @@ public class ViewPatients extends javax.swing.JPanel {
      */
     private MainSystem mainSystem;
     private JPanel aPanel;
+    private String previousCard;
 
     public ViewPatients(MainSystem mainSystem) {
         initComponents();
@@ -32,6 +34,8 @@ public class ViewPatients extends javax.swing.JPanel {
         this.aPanel = mainSystem.getaPanel();
         updateButton.setEnabled(false);
         viewEncountersButton.setEnabled(false);
+        this.previousCard = String.valueOf(aPanel.findComponentAt(0, 0));
+
         populateTable();
     }
 
@@ -329,10 +333,19 @@ public class ViewPatients extends javax.swing.JPanel {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
-        DoctorDashboard dashboard = new DoctorDashboard(mainSystem);
-        aPanel.add(dashboard);
-        CardLayout layout = (CardLayout) aPanel.getLayout();
-        layout.next(aPanel);
+
+        if (previousCard.contains("CRUDPatient")) {
+            CRUDPatient crudPatient = new CRUDPatient(mainSystem);
+            aPanel.add(crudPatient);
+            CardLayout layout = (CardLayout) aPanel.getLayout();
+            layout.next(aPanel);
+        } else {
+            DoctorDashboard dashboard = new DoctorDashboard(mainSystem);
+            aPanel.add(dashboard);
+            CardLayout layout = (CardLayout) aPanel.getLayout();
+            layout.next(aPanel);
+        }
+
     }//GEN-LAST:event_backButtonActionPerformed
 
 
