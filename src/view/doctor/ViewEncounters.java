@@ -98,7 +98,7 @@ public class ViewEncounters extends javax.swing.JPanel {
             encounterTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        viewButton.setText("VIew");
+        viewButton.setText("View");
         viewButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewButtonActionPerformed(evt);

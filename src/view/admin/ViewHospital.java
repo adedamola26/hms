@@ -27,10 +27,10 @@ public class ViewHospital extends javax.swing.JPanel {
      */
     private MainSystem mainSystem;
     private JPanel aPanel;
-    
+
     public ViewHospital(MainSystem mainSystem) {
         initComponents();
-        
+
         this.mainSystem = mainSystem;
         this.aPanel = mainSystem.getaPanel();
         populateCityMenu();
@@ -139,22 +139,16 @@ public class ViewHospital extends javax.swing.JPanel {
         addressLabel.setText("Address");
 
         viewDoctorsButton.setText("View Doctors");
+        viewDoctorsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewDoctorsButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(360, 360, 360)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(viewButton)
-                        .addGap(227, 227, 227)
-                        .addComponent(deleteButton)
-                        .addGap(240, 240, 240))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(nameField, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
-                        .addGap(576, 576, 576))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -162,6 +156,13 @@ public class ViewHospital extends javax.swing.JPanel {
                         .addComponent(backButton)
                         .addGap(208, 208, 208)
                         .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(323, 323, 323)
+                        .addComponent(updateButton)
+                        .addGap(112, 112, 112)
+                        .addComponent(addButton)
+                        .addGap(102, 102, 102)
+                        .addComponent(viewDoctorsButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(58, 58, 58)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,26 +173,24 @@ public class ViewHospital extends javax.swing.JPanel {
                             .addComponent(cityMenu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(communityMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(44, 44, 44)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(205, 205, 205)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(updateButton)
-                                .addGap(113, 113, 113)
-                                .addComponent(addButton))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(nameLabel)
-                                .addGap(253, 253, 253)
-                                .addComponent(addressLabel)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(90, 90, 90)
-                                .addComponent(addressField, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(106, 106, 106)
-                                .addComponent(viewDoctorsButton)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(124, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(viewButton)
+                .addGap(227, 227, 227)
+                .addComponent(deleteButton)
+                .addGap(240, 240, 240))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(292, 292, 292)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(addressLabel)
+                    .addComponent(nameLabel))
+                .addGap(51, 51, 51)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(nameField, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
+                    .addComponent(addressField))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,18 +217,20 @@ public class ViewHospital extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(viewButton)
                     .addComponent(deleteButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nameLabel)
-                    .addComponent(addressLabel)
                     .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nameLabel))
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addressLabel)
                     .addComponent(addressField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(55, 55, 55)
+                .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(updateButton)
                     .addComponent(addButton)
                     .addComponent(viewDoctorsButton))
-                .addGap(54, 54, 54))
+                .addGap(42, 42, 42))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -245,9 +246,9 @@ public class ViewHospital extends javax.swing.JPanel {
         // TODO add your handling code here:
         communityMenu.removeAllItems();
         City selectedCity = (City) cityMenu.getSelectedItem();
-        
+
         CommunityDirectory allCommunities = selectedCity.getAllCommunities();
-        
+
         for (Community c : allCommunities.getAllCommunities()) {
             communityMenu.addItem(c);
         }
@@ -265,54 +266,68 @@ public class ViewHospital extends javax.swing.JPanel {
         // TODO add your handling code here:
 
         if (validateUpdate()) {
-            Community selectedcommunity = mainSystem.getaCommunity();
-            City selectedCity = mainSystem.getaCity();
-            CommunityDirectory allCommunities = selectedCity.getAllCommunities();
             CityDirectory allCities = mainSystem.getAllCities();
-            
-            selectedcommunity.setName(communityField.getText());
-            selectedcommunity.setPostalCode(postalCodeField.getText());
-            
-            allCommunities.addCommunity(selectedcommunity);
+            City selectedCity = mainSystem.getaCity();
+//            allCities.removeCity(selectedCity);
+
+            CommunityDirectory allCommunities = selectedCity.getAllCommunities();
+            Community selectedCommunity = mainSystem.getaCommunity();
+
+            HospitalDirectory allHospitals = selectedCommunity.getAllHospitals();
+            Hospital selectedHospital = mainSystem.getaHospital();
+            selectedHospital.setName(nameField.getText());
+            selectedHospital.setAddress(addressField.getText());
+
+            allHospitals.addHospital(selectedHospital);
+            selectedCommunity.setAllHospitals(allHospitals);
+            allCommunities.addCommunity(selectedCommunity);
             selectedCity.setAllCommunities(allCommunities);
-            
             allCities.addCity(selectedCity);
-            
             mainSystem.setAllCities(allCities);
-            
-            JOptionPane.showMessageDialog(aPanel, "Community's details updated successfully.", "Success", HEIGHT);
+
+            JOptionPane.showMessageDialog(aPanel, "Hospital's details updated successfully.", "Success", HEIGHT);
             populateTable();
+
+            cityMenu.setEnabled(true);
+            communityMenu.setEnabled(true);
+            viewButton.setEnabled(true);
+            backButton.setEnabled(true);
+            deleteButton.setEnabled(true);
             updateButton.setEnabled(false);
             addButton.setEnabled(true);
-            viewButton.setEnabled(true);
-            cityMenu.setEnabled(true);
-            communityTable.setRowSelectionAllowed(true);
+            viewDoctorsButton.setEnabled(false);
+            hospitalTable.setRowSelectionAllowed(true);
             clearFields();
-            backButton.setEnabled(true);
-            
         }
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
         if (validateAddition()) {
-            Community newCommunity = new Community();
-            
-            newCommunity.setName(communityField.getText());
-            newCommunity.setPostalCode(postalCodeField.getText());
-            
+            Hospital newHospital = new Hospital();
+
+            newHospital.setName(nameField.getText());
+            newHospital.setAddress(addressField.getText());
+
             CityDirectory allCities = mainSystem.getAllCities();
             City selectedCity = (City) cityMenu.getSelectedItem();
             allCities.removeCity(selectedCity);
-            
+
             CommunityDirectory allCommunities = selectedCity.getAllCommunities();
-            
-            allCommunities.addCommunity(newCommunity);
-            
+            Community selectedCommunity = (Community) communityMenu.getSelectedItem();
+
+            allCommunities.removeCommunity(selectedCommunity);
+
+            HospitalDirectory allHospitals = selectedCommunity.getAllHospitals();
+            allHospitals.addHospital(newHospital);
+
+            selectedCommunity.setAllHospitals(allHospitals);
+            allCommunities.addCommunity(selectedCommunity);
+
             selectedCity.setAllCommunities(allCommunities);
             allCities.addCity(selectedCity);
             mainSystem.setAllCities(allCities);
-            JOptionPane.showMessageDialog(aPanel, "Community added successfully.", "Success", HEIGHT);
+            JOptionPane.showMessageDialog(aPanel, "Hospital added successfully.", "Success", HEIGHT);
             populateTable();
             clearFields();
         }
@@ -324,60 +339,82 @@ public class ViewHospital extends javax.swing.JPanel {
         if (selectedIndex < 0) {
             JOptionPane.showMessageDialog(aPanel, "Please select hospital to view.", "Error", HEIGHT);
         } else {
-            updateButton.setEnabled(true);
-            addButton.setEnabled(false);
-            viewDoctorsButton.setEnabled(true);
-            
+
             hospitalTable.setRowSelectionAllowed(false);
-            
+
             CityDirectory allCities = mainSystem.getAllCities();
             City selectedCity = (City) cityMenu.getSelectedItem();
             allCities.removeCity(selectedCity);
             CommunityDirectory allCommunities = selectedCity.getAllCommunities();
             Community selectedCommunity = (Community) communityMenu.getSelectedItem();
-            
-            
             allCommunities.removeCommunity(selectedCommunity);
+
+            Hospital selectedHospital = (Hospital) hospitalTable.getValueAt(selectedIndex, 0);
+            HospitalDirectory allHospitals = selectedCommunity.getAllHospitals();
+            allHospitals.removeHospital(selectedHospital);
+            selectedCommunity.setAllHospitals(allHospitals);
+
             selectedCity.setAllCommunities(allCommunities);
-            allCities.addCity(selectedCity);
-            
+//            allCities.addCity(selectedCity);
+
             mainSystem.setAllCities(allCities);
             mainSystem.setaCity(selectedCity);
             mainSystem.setaCommunity(selectedCommunity);
-            
-            communityField.setText(selectedCommunity.getName());
-            postalCodeField.setText(selectedCommunity.getPostalCode());
-            
+            mainSystem.setaHospital(selectedHospital);
+
+            nameField.setText(selectedHospital.getName());
+            addressField.setText(selectedHospital.getAddress());
+
             cityMenu.setEnabled(false);
+            communityMenu.setEnabled(false);
             viewButton.setEnabled(false);
             backButton.setEnabled(false);
+            deleteButton.setEnabled(false);
+            updateButton.setEnabled(true);
+            addButton.setEnabled(false);
+            viewDoctorsButton.setEnabled(true);
+
         }
     }//GEN-LAST:event_viewButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
 
-        int selectedIndex = communityTable.getSelectedRow();
+        int selectedIndex = hospitalTable.getSelectedRow();
         if (selectedIndex < 0) {
-            JOptionPane.showMessageDialog(aPanel, "Please select community to delete.", "Error", HEIGHT);
+            JOptionPane.showMessageDialog(aPanel, "Please select hospital to delete.", "Error", HEIGHT);
         } else {
-            Community selectedCommunity = (Community) communityTable.getValueAt(selectedIndex, 0);
-            
+            Hospital selectedHospital = (Hospital) hospitalTable.getValueAt(selectedIndex, 0);
+
             CityDirectory allCities = mainSystem.getAllCities();
             City selectedCity = (City) cityMenu.getSelectedItem();
+            Community selectedCommunity = (Community) communityMenu.getSelectedItem();
+
             allCities.removeCity(selectedCity);
-            
+
             CommunityDirectory allCommunities = selectedCity.getAllCommunities();
-            
+
             allCommunities.removeCommunity(selectedCommunity);
-            
+            HospitalDirectory allHospitals = selectedCommunity.getAllHospitals();
+            allHospitals.removeHospital(selectedHospital);
+            selectedCommunity.setAllHospitals(allHospitals);
+            allCommunities.addCommunity(selectedCommunity);
+
             selectedCity.setAllCommunities(allCommunities);
             allCities.addCity(selectedCity);
             mainSystem.setAllCities(allCities);
-            JOptionPane.showMessageDialog(aPanel, "Community deleted successfully.", "Success", HEIGHT);
+            JOptionPane.showMessageDialog(aPanel, "Hospital deleted successfully.", "Success", HEIGHT);
             populateTable();
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void viewDoctorsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewDoctorsButtonActionPerformed
+        // TODO add your handling code here:
+        ViewDoctors viewPatients = new ViewDoctors(mainSystem);
+        aPanel.add(viewPatients);
+        CardLayout layout = (CardLayout) aPanel.getLayout();
+        layout.next(aPanel);
+    }//GEN-LAST:event_viewDoctorsButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -404,19 +441,53 @@ public class ViewHospital extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) hospitalTable.getModel();
         model.setRowCount(0);
         Community community = (Community) communityMenu.getSelectedItem();
-        
         HospitalDirectory hospitals = community.getAllHospitals();
         for (Hospital h : hospitals.getAllHospitals()) {
-            Object[] rows = new Object[3];
-            rows[0] = h.getName();
+            Object[] rows = new Object[2];
+            rows[0] = h;
             rows[1] = h.getAddress();
             model.addRow(rows);
         }
     }
-    
+
     private void populateCityMenu() {
+        
         for (City c : mainSystem.getAllCities().getAllCities()) {
             cityMenu.addItem(c);
         }
+    }
+
+    private boolean validateAddition() {
+        boolean b = false;
+        if (nameField.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(aPanel, "Please enter hospital name", "Error", HEIGHT);
+            nameField.requestFocus();
+        } else if (addressField.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(aPanel, "Please enter address", "Error", HEIGHT);
+            addressField.requestFocus();
+        } else {
+            b = true;
+        }
+        return b;
+    }
+
+    private void clearFields() {
+
+        nameField.setText("");
+        addressField.setText("");
+    }
+
+    private boolean validateUpdate() {
+        boolean b = false;
+        if (nameField.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(aPanel, "Please enter hospital name", "Error", HEIGHT);
+            nameField.requestFocus();
+        } else if (addressField.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(aPanel, "Please enter address", "Error", HEIGHT);
+            addressField.requestFocus();
+        } else {
+            b = true;
+        }
+        return b;
     }
 }

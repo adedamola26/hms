@@ -21,6 +21,7 @@ public class MainSystem {
     private JPanel freePanel;
     private Community aCommunity;
     private City aCity;
+    private Hospital aHospital;
 
     public MainSystem() {
         this.aPanel = new JPanel();
@@ -93,6 +94,14 @@ public class MainSystem {
 
     public void setaCity(City aCity) {
         this.aCity = aCity;
+    }
+
+    public Hospital getaHospital() {
+        return aHospital;
+    }
+
+    public void setaHospital(Hospital aHospital) {
+        this.aHospital = aHospital;
     }
 
 }

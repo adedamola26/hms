@@ -25,41 +25,39 @@
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="246" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="dateLabel" min="-2" pref="78" max="-2" attributes="0"/>
-                                  <Component id="temperatureLabel" min="-2" max="-2" attributes="0"/>
-                                  <Component id="pulseLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="107" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="temperatureField" max="32767" attributes="0"/>
-                                      <Component id="pulseField" alignment="0" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Component id="dateChooser" min="-2" pref="142" max="-2" attributes="0"/>
-                              </Group>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="complaintLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="138" max="-2" attributes="0"/>
+                              <Component id="complaintField" min="-2" pref="134" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="prescriptionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="diagnosisField" alignment="1" min="-2" pref="134" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="diagnosisLabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="diagnosisField" min="-2" pref="126" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="dateLabel" min="-2" pref="78" max="-2" attributes="0"/>
+                                      <Component id="temperatureLabel" min="-2" max="-2" attributes="0"/>
+                                      <Component id="pulseLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="115" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="dateChooser" min="-2" pref="134" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="temperatureField" alignment="1" min="-2" pref="134" max="-2" attributes="0"/>
+                                          <Component id="pulseField" alignment="1" min="-2" pref="134" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
                               </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="prescriptionLabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="prescriptionField" min="-2" pref="134" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="diagnosisLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="errorLabel" min="-2" pref="211" max="-2" attributes="0"/>
-                                      <Component id="prescriptionField" min="-2" pref="134" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="errorLabel" min="-2" pref="211" max="-2" attributes="0"/>
                               </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="complaintLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="130" max="-2" attributes="0"/>
-                              <Component id="complaintField" min="-2" pref="134" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="0" pref="6" max="32767" attributes="0"/>
@@ -194,6 +192,7 @@
     <Component class="javax.swing.JTextField" name="pulseField">
       <Events>
         <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="pulseFieldFocusLost"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pulseFieldActionPerformed"/>
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="pulseFieldKeyPressed"/>
       </Events>
     </Component>
