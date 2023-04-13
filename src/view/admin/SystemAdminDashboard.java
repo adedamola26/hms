@@ -28,7 +28,7 @@ public class SystemAdminDashboard extends javax.swing.JPanel {
         this.mainSystem = mainSystem;
         this.aPanel = mainSystem.getaPanel();
         disableIrrelevantButtons();
-
+        checkAdminType();
     }
 
     /**
@@ -176,6 +176,15 @@ public class SystemAdminDashboard extends javax.swing.JPanel {
                 JButton myButton = (JButton) component;
                 myButton.setEnabled(true);
             }
+        }
+    }
+
+    private void checkAdminType() {
+        
+        String adminType = mainSystem.getAdminType();
+        if (adminType.equals("Community Admin")){
+            communityButton.setEnabled(false);
+            patientButton.setEnabled(false);
         }
     }
 }

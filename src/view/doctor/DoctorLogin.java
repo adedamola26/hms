@@ -141,19 +141,23 @@ public class DoctorLogin extends javax.swing.JPanel {
     private Object[] validateLogin() {
         Object[] o = new Object[2];
         o[0] = false;
-        for (City ci : allCities.getAllCities()) {
-            for (Community co : ci.getAllCommunities().getAllCommunities()) {
-                for (Hospital h : co.getAllHospitals().getAllHospitals()) {
-                    for (Doctor d : h.getAllDoctors().getAllDoctors()) {
-                        if ((usernameField.getText().equals(d.getUsername()))
-                                & passwordField.getText().equals(d.getPassword())) {
-                            o[0] = true;
-                            o[1] = d;
-                            break;
+        try {
+            for (City ci : allCities.getAllCities()) {
+                for (Community co : ci.getAllCommunities().getAllCommunities()) {
+                    for (Hospital h : co.getAllHospitals().getAllHospitals()) {
+                        for (Doctor d : h.getAllDoctors().getAllDoctors()) {
+                            if ((usernameField.getText().equals(d.getUsername()))
+                                    & passwordField.getText().equals(d.getPassword())) {
+                                o[0] = true;
+                                o[1] = d;
+                                break;
+                            }
                         }
                     }
                 }
             }
+        } catch (NullPointerException e) {
+
         }
         return o;
     }

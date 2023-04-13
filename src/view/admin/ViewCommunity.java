@@ -247,6 +247,7 @@ public class ViewCommunity extends javax.swing.JPanel {
             cityMenu.setEnabled(false);
             viewButton.setEnabled(false);
             backButton.setEnabled(false);
+            deleteButton.setEnabled(false);
         }
     }//GEN-LAST:event_viewButtonActionPerformed
 
@@ -278,6 +279,8 @@ public class ViewCommunity extends javax.swing.JPanel {
             communityTable.setRowSelectionAllowed(true);
             clearFields();
                         backButton.setEnabled(true);
+                                    deleteButton.setEnabled(true);
+
 
         }
     }//GEN-LAST:event_updateButtonActionPerformed

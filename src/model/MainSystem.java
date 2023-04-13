@@ -22,6 +22,7 @@ public class MainSystem {
     private Community aCommunity;
     private City aCity;
     private Hospital aHospital;
+    private String adminType;
 
     public MainSystem() {
         this.aPanel = new JPanel();
@@ -102,6 +103,14 @@ public class MainSystem {
 
     public void setaHospital(Hospital aHospital) {
         this.aHospital = aHospital;
+    }
+
+    public String getAdminType() {
+        return adminType;
+    }
+
+    public void setAdminType(String adminType) {
+        this.adminType = adminType;
     }
 
 }
