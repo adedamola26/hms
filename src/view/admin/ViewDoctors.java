@@ -5,6 +5,8 @@
 package view.admin;
 
 import java.awt.CardLayout;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -70,11 +72,11 @@ public class ViewDoctors extends javax.swing.JPanel {
 
             },
             new String [] {
-                "First Name", "Last Name", "Username", "Password"
+                "ID", "First Name", "Last Name", "Username", "Password"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -87,6 +89,7 @@ public class ViewDoctors extends javax.swing.JPanel {
             doctorTable.getColumnModel().getColumn(1).setResizable(false);
             doctorTable.getColumnModel().getColumn(2).setResizable(false);
             doctorTable.getColumnModel().getColumn(3).setResizable(false);
+            doctorTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
         titleLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -367,24 +370,47 @@ public class ViewDoctors extends javax.swing.JPanel {
 
     private void populateTable() {
 
-        DefaultTableModel model = (DefaultTableModel) doctorTable.getModel();
-        model.setRowCount(0);
-        DoctorDirectory allDoctors = mainSystem.getaHospital().getAllDoctors();
+//        DefaultTableModel model = (DefaultTableModel) doctorTable.getModel();
+//        model.setRowCount(0);
+//        DoctorDirectory allDoctors = mainSystem.getaHospital().getAllDoctors();
+//        try {
+//            for (Doctor d : allDoctors.getAllDoctors()) {
+//                Object[] rows = new Object[4];
+//
+//                rows[0] = d;
+//                rows[1] = d.getLastName();
+//                rows[2] = d.getUsername();
+//                rows[3] = d.getPassword();
+//
+//                model.addRow(rows);
+////            clearFields();
+//            }
+//        } catch (NullPointerException e) {
+//
+//        }
+
+        DoctorDirectory allDocs = new DoctorDirectory();
         try {
-            for (Doctor d : allDoctors.getAllDoctors()) {
-                Object[] rows = new Object[4];
+            Object[] oConn = allDocs.getAllDoctors();
+            ResultSet rs = (ResultSet) oConn[0];
+            Connection conn = (Connection) oConn[1];
 
-                rows[0] = d;
-                rows[1] = d.getLastName();
-                rows[2] = d.getUsername();
-                rows[3] = d.getPassword();
-
-                model.addRow(rows);
-//            clearFields();
+            DefaultTableModel model = (DefaultTableModel) doctorTable.getModel();
+            model.setRowCount(0);
+            while (rs.next()) {
+                Object o[] = {rs.getString("ID"),
+                    rs.getString("FirstName"),
+                    rs.getString("LastName"),
+                    rs.getString("Username"),
+                    rs.getString("Password"),};
+                model.addRow(o);
             }
-        } catch (NullPointerException e) {
+            conn.close();
 
+        } catch (Exception e) {
+            System.out.println(e);
         }
+
     }
 
     private void clearFields() {

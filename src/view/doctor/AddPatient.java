@@ -7,6 +7,10 @@ package view.doctor;
 import java.awt.CardLayout;
 import static java.awt.event.KeyEvent.VK_BACK_SPACE;
 import static java.awt.event.KeyEvent.VK_DELETE;
+import static java.awt.image.ImageObserver.HEIGHT;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import model.CityDirectory;
@@ -15,6 +19,8 @@ import model.MainSystem;
 import model.Patient;
 import model.PatientDirectory;
 import view.admin.CRUDPatient;
+import java.sql.Statement;
+import java.sql.ResultSet;
 
 /**
  *
@@ -180,17 +186,54 @@ public class AddPatient extends javax.swing.JPanel {
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
         if (validateSave()) {
-            Patient newPatient = new Patient();
-            PatientDirectory allPatients = mainSystem.getAllPatients();
-            newPatient.setFirstName(firstNameField.getText());
-            newPatient.setLastName(lastNameField.getText());
-            newPatient.setGender(String.valueOf(genderMenu.getSelectedItem()));
-            newPatient.setBloodGroup(String.valueOf(bloodMenu.getSelectedItem()));
-            allPatients.addPatient(newPatient);
+//            Patient newPatient = new Patient();
+//            PatientDirectory allPatients = mainSystem.getAllPatients();
+//            newPatient.setFirstName(firstNameField.getText());
+//            newPatient.setLastName(lastNameField.getText());
+//            newPatient.setGender(String.valueOf(genderMenu.getSelectedItem()));
+//            newPatient.setBloodGroup(String.valueOf(bloodMenu.getSelectedItem()));
+//            allPatients.addPatient(newPatient);
+//
+//            mainSystem.setAllPatients(allPatients);
+//            mainSystem.setaPatient(newPatient);
+//            JOptionPane.showMessageDialog(aPanel, "Patient Created Successfully.", "Success", HEIGHT);
+            String generatedId = null;
 
-            mainSystem.setAllPatients(allPatients);
-            mainSystem.setaPatient(newPatient);
-            JOptionPane.showMessageDialog(aPanel, "Patient Created Successfully.", "Success", HEIGHT);
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+
+                String sql = "insert into patientsdirectory (FirstName, LastName, Gender, BloodGroup)"
+                        + " values (?,?,?,?)";
+                PreparedStatement ptst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+                ptst.setString(1, firstNameField.getText());
+                ptst.setString(2, lastNameField.getText());
+                ptst.setString(3, String.valueOf(genderMenu.getSelectedItem()));
+                ptst.setString(4, String.valueOf(bloodMenu.getSelectedItem()));
+
+                ptst.executeUpdate();
+                ResultSet rs = ptst.getGeneratedKeys();
+                if (rs.next()) {
+                    generatedId = String.valueOf(rs.getInt(1));
+                }
+
+                String sql2 = "create table ID_" + generatedId + "_EncHistory ("
+                        + "Date varchar(255),"
+                        + "Temperature varchar(255),"
+                        + "PulseRate varchar(255),"
+                        + "AttendingDoctor varchar(255),"
+                        + "Complaint varchar(255),"
+                        + "Diagnosis varchar(255),"
+                        + "Prescription varchar(255))";
+                PreparedStatement ptst2 = conn.prepareStatement(sql2);
+                mainSystem.setPatientID(generatedId);
+                ptst2.executeUpdate();
+                conn.close();
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e, "sjkd", HEIGHT);
+            }
 
             if (previousCard.contains("CRUDPatient")) {
                 CRUDPatient crudPatient = new CRUDPatient(mainSystem);

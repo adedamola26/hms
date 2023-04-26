@@ -8,6 +8,11 @@ import java.awt.CardLayout;
 import static java.awt.event.KeyEvent.VK_BACK_SPACE;
 import static java.awt.event.KeyEvent.VK_DELETE;
 import static java.awt.image.ImageObserver.HEIGHT;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
@@ -219,31 +224,54 @@ public class RecordEncounter extends javax.swing.JPanel {
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
         if (validateSave()) {
-            Encounter encounter = new Encounter();
-            VitalSign vitalSign = new VitalSign();
-            EncounterHistory allEncounters = aPatient.getAllEncounter();
-
-            vitalSign.setPulseRate(Integer.parseInt(pulseField.getText()));
-            vitalSign.setTemperature(Float.parseFloat(temperatureField.getText()));
-
-            encounter.setAttendingDoc(attendingDoctor.getFirstName() + " " + attendingDoctor.getLastName());
-            encounter.setComplaint(complaintField.getText());
-            encounter.setDiagnosis(diagnosisField.getText());
-            encounter.setPrescription(prescriptionField.getText());
-            encounter.setVitalSigns(vitalSign);
-            encounter.setVisitDate(dateChooser.getDate());
+//            Encounter encounter = new Encounter();
+//            VitalSign vitalSign = new VitalSign();
+//            EncounterHistory allEncounters = aPatient.getAllEncounter();
+//            
+//            vitalSign.setPulseRate(Integer.parseInt(pulseField.getText()));
+//            vitalSign.setTemperature(Float.parseFloat(temperatureField.getText()));
+//
+//            encounter.setAttendingDoc(attendingDoctor.getFirstName() + " " + attendingDoctor.getLastName());
+////            encounter.setAttendingDoc(getAttendingDoctor());
+//            encounter.setComplaint(complaintField.getText());
+//            encounter.setDiagnosis(diagnosisField.getText());
+//            encounter.setPrescription(prescriptionField.getText());
+//            encounter.setVitalSigns(vitalSign);
+//            encounter.setVisitDate(dateChooser.getDate());
+//            try {
+//                allEncounters.addEncounter(encounter);
+//                aPatient.setAllEncounter(allEncounters);
+//                
+//            } catch (NullPointerException e) {
+//                EncounterHistory newAllEncounters = new EncounterHistory();
+//                newAllEncounters.addEncounter(encounter);
+//                aPatient.setAllEncounter(newAllEncounters);
+//            }
+//            mainSystem.setaPatient(aPatient);
+            DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+            String dt = fmt.format(dateChooser.getDate());
             try {
-                allEncounters.addEncounter(encounter);
-                aPatient.setAllEncounter(allEncounters);
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
-            } catch (NullPointerException e) {
-                EncounterHistory newAllEncounters = new EncounterHistory();
-                newAllEncounters.addEncounter(encounter);
-                aPatient.setAllEncounter(newAllEncounters);
-            }
+                String sql = "insert into id_" + mainSystem.getPatientID() + "_enchistory values (?,?,?,?,?,?,?)";
+                PreparedStatement ptst = conn.prepareStatement(sql);
 
-            mainSystem.setaPatient(aPatient);
+                ptst.setString(1, dt);
+                ptst.setString(2, temperatureField.getText());
+                ptst.setString(3, pulseField.getText());
+                ptst.setString(4, getAttendingDoctor());
+                ptst.setString(5, complaintField.getText());
+                ptst.setString(6, diagnosisField.getText());
+                ptst.setString(7, prescriptionField.getText());
+
+                ptst.executeUpdate();
+                conn.close();
             JOptionPane.showMessageDialog(aPanel, "Encounter Saved Successfully.", "Success", HEIGHT);
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e, "sjkd", HEIGHT);
+            }
 
             if (previousCard.contains("AddPatient")) {
                 DoctorDashboard dashboard = new DoctorDashboard(mainSystem);
@@ -360,5 +388,27 @@ public class RecordEncounter extends javax.swing.JPanel {
         }
         return b;
 
+    }
+
+    private String getAttendingDoctor() {
+        String name = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+
+            String sql = "select * from doctorsdirectory where ID = '" + mainSystem.getDocID() + "'";
+
+            PreparedStatement ptst = conn.prepareStatement(sql);
+            ResultSet rs = ptst.executeQuery();
+            rs.next();
+            name = rs.getString("FirstName") + " " + rs.getString("LastName");
+            conn.close();
+
+        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+//            System.out.println(e);
+
+        }
+        return name;
     }
 }

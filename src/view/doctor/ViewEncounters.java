@@ -6,6 +6,8 @@ package view.doctor;
 
 import java.awt.CardLayout;
 import static java.awt.image.ImageObserver.HEIGHT;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
@@ -78,11 +80,11 @@ public class ViewEncounters extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Date", "Attending Doctor", "Complaint", "Diagnosis", "Prescription"
+                "Date", "Temperature", "Pulse Rate", "Attending Doctor", "Complaint", "Diagnosis", "Prescription"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -96,6 +98,8 @@ public class ViewEncounters extends javax.swing.JPanel {
             encounterTable.getColumnModel().getColumn(2).setResizable(false);
             encounterTable.getColumnModel().getColumn(3).setResizable(false);
             encounterTable.getColumnModel().getColumn(4).setResizable(false);
+            encounterTable.getColumnModel().getColumn(5).setResizable(false);
+            encounterTable.getColumnModel().getColumn(6).setResizable(false);
         }
 
         viewButton.setText("View");
@@ -281,9 +285,9 @@ public class ViewEncounters extends javax.swing.JPanel {
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         // TODO add your handling code here:
 
-        PatientDirectory allPatients = mainSystem.getAllPatients();
-        allPatients.addPatient(mainSystem.getaPatient());
-        mainSystem.setAllPatients(allPatients);
+//        PatientDirectory allPatients = mainSystem.getAllPatients();
+//        allPatients.addPatient(mainSystem.getaPatient());
+//        mainSystem.setAllPatients(allPatients);
         JOptionPane.showMessageDialog(aPanel, "Patient's details updated successfully.", "Success", HEIGHT);
         ViewPatients viewPatients = new ViewPatients(mainSystem);
         aPanel.add(viewPatients);
@@ -337,26 +341,49 @@ public class ViewEncounters extends javax.swing.JPanel {
 
     private void populateTable() {
 
-        DefaultTableModel model = (DefaultTableModel) encounterTable.getModel();
-        model.setRowCount(0);
-        EncounterHistory allEncounters = mainSystem.getaPatient().getAllEncounter();
+//        DefaultTableModel model = (DefaultTableModel) encounterTable.getModel();
+//        model.setRowCount(0);
+//        EncounterHistory allEncounters = mainSystem.getaPatient().getAllEncounter();
+//        try {
+//            for (Encounter e : allEncounters.getAllEncounters()) {
+//                Object[] rows = new Object[5];
+//                DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+//                String visitDate = fmt.format(e.getVisitDate());
+//
+//                rows[0] = visitDate;
+//                rows[1] = e.getAttendingDoc();
+//                rows[2] = e;
+//                rows[3] = e.getDiagnosis();
+//                rows[4] = e.getPrescription();
+//
+//                model.addRow(rows);
+////            clearFields();
+//            }
+//        } catch (NullPointerException e) {
+//
+//        }
+        EncounterHistory allE = new EncounterHistory();
         try {
-            for (Encounter e : allEncounters.getAllEncounters()) {
-                Object[] rows = new Object[5];
-                DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-                String visitDate = fmt.format(e.getVisitDate());
+            Object[] oConn = allE.getAllEncounters(mainSystem.getPatientID());
+            ResultSet rs = (ResultSet) oConn[0];
+            Connection conn = (Connection) oConn[1];
 
-                rows[0] = visitDate;
-                rows[1] = e.getAttendingDoc();
-                rows[2] = e;
-                rows[3] = e.getDiagnosis();
-                rows[4] = e.getPrescription();
-
-                model.addRow(rows);
-//            clearFields();
+            DefaultTableModel model = (DefaultTableModel) encounterTable.getModel();
+            model.setRowCount(0);
+            while (rs.next()) {
+                Object o[] = {rs.getString("Date"),
+                    rs.getString("Temperature"),
+                        rs.getString("PulseRate"),
+                    rs.getString("AttendingDoctor"),
+                    rs.getString("Complaint"),
+                    rs.getString("Diagnosis"),
+                    rs.getString("Prescription"),};
+                model.addRow(o);
             }
-        } catch (NullPointerException e) {
+            conn.close();
 
+        } catch (Exception e) {
+            System.out.println(e);
         }
 
     }

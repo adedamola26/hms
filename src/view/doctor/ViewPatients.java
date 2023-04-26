@@ -7,9 +7,16 @@ package view.doctor;
 import java.awt.CardLayout;
 import static java.awt.event.KeyEvent.VK_BACK_SPACE;
 import static java.awt.event.KeyEvent.VK_DELETE;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import model.DoctorDirectory;
 import model.MainSystem;
 import model.Patient;
 import model.PatientDirectory;
@@ -74,11 +81,11 @@ public class ViewPatients extends javax.swing.JPanel {
 
             },
             new String [] {
-                "First Name", "Last Name", "Gender", "Blood Group"
+                "ID", "First Name", "Last Name", "Gender", "Blood Group"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -91,6 +98,7 @@ public class ViewPatients extends javax.swing.JPanel {
             patientsTable.getColumnModel().getColumn(1).setResizable(false);
             patientsTable.getColumnModel().getColumn(2).setResizable(false);
             patientsTable.getColumnModel().getColumn(3).setResizable(false);
+            patientsTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
         viewButton.setText("VIew");
@@ -246,22 +254,35 @@ public class ViewPatients extends javax.swing.JPanel {
         if (selectedIndex < 0) {
             JOptionPane.showMessageDialog(aPanel, "Please select patient to view.", "Error", HEIGHT);
         } else {
+//            updateButton.setEnabled(true);
+//            viewEncountersButton.setEnabled(true);
+//            backButton.setEnabled(false);
+//
+//            patientsTable.setRowSelectionAllowed(false);
+//
+//            Patient selectedPatient = (Patient) patientsTable.getValueAt(selectedIndex, 0);
+//            PatientDirectory allPatients = mainSystem.getAllPatients();
+//            allPatients.removePatient(selectedPatient);
+//            mainSystem.setAllPatients(allPatients);
+//            mainSystem.setaPatient(selectedPatient);
+//
+//            firstNameField.setText(selectedPatient.getFirstName());
+//            lastNameField.setText(selectedPatient.getLastName());
+//            genderMenu.setSelectedItem(selectedPatient.getGender());
+//            bloodMenu.setSelectedItem(selectedPatient.getBloodGroup());
+
             updateButton.setEnabled(true);
             viewEncountersButton.setEnabled(true);
             backButton.setEnabled(false);
 
             patientsTable.setRowSelectionAllowed(false);
-            Patient selectedPatient = (Patient) patientsTable.getValueAt(selectedIndex, 0);
-            PatientDirectory allPatients = mainSystem.getAllPatients();
-            allPatients.removePatient(selectedPatient);
-            mainSystem.setAllPatients(allPatients);
-            mainSystem.setaPatient(selectedPatient);
+            String id = String.valueOf(patientsTable.getValueAt(selectedIndex, 0));
 
-            firstNameField.setText(selectedPatient.getFirstName());
-            lastNameField.setText(selectedPatient.getLastName());
-            genderMenu.setSelectedItem(selectedPatient.getGender());
-            bloodMenu.setSelectedItem(selectedPatient.getBloodGroup());
-
+            firstNameField.setText(String.valueOf(patientsTable.getValueAt(selectedIndex, 1)));
+            lastNameField.setText(String.valueOf(patientsTable.getValueAt(selectedIndex, 2)));
+            genderMenu.setSelectedItem(String.valueOf(patientsTable.getValueAt(selectedIndex, 3)));
+            bloodMenu.setSelectedItem(String.valueOf(patientsTable.getValueAt(selectedIndex, 4)));
+            mainSystem.setPatientID(id);
         }
     }//GEN-LAST:event_viewButtonActionPerformed
 
@@ -302,16 +323,42 @@ public class ViewPatients extends javax.swing.JPanel {
         int selectedIndex = patientsTable.getSelectedRow();
 
         if (validateUpdate()) {
-            Patient selectedPatient = mainSystem.getaPatient();
-            PatientDirectory allPatients = mainSystem.getAllPatients();
+//            Patient selectedPatient = mainSystem.getaPatient();
+//            PatientDirectory allPatients = mainSystem.getAllPatients();
+//
+//            selectedPatient.setFirstName(firstNameField.getText());
+//            selectedPatient.setLastName(lastNameField.getText());
+//            selectedPatient.setGender(String.valueOf(genderMenu.getSelectedItem()));
+//            selectedPatient.setBloodGroup(String.valueOf(bloodMenu.getSelectedItem()));
+//            allPatients.addPatient(selectedPatient);
+//            mainSystem.setAllPatients(allPatients);
+//            JOptionPane.showMessageDialog(aPanel, "Patient's details updated successfully.", "Success", HEIGHT);
+//            populateTable();
+//            updateButton.setEnabled(false);
+//            viewEncountersButton.setEnabled(false);
+//            backButton.setEnabled(true);
+//
+//            patientsTable.setRowSelectionAllowed(true);
+//            clearFields();
 
-            selectedPatient.setFirstName(firstNameField.getText());
-            selectedPatient.setLastName(lastNameField.getText());
-            selectedPatient.setGender(String.valueOf(genderMenu.getSelectedItem()));
-            selectedPatient.setBloodGroup(String.valueOf(bloodMenu.getSelectedItem()));
-            allPatients.addPatient(selectedPatient);
-            mainSystem.setAllPatients(allPatients);
-            JOptionPane.showMessageDialog(aPanel, "Patient's details updated successfully.", "Success", HEIGHT);
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+
+                String sql = "update patientsdirectory set FirstName = '" + firstNameField.getText()
+                        + "', LastName = '" + lastNameField.getText()
+                        + "', Gender = '" + genderMenu.getSelectedItem()
+                        + "', BloodGroup = '" + bloodMenu.getSelectedItem()
+                        + "' where ID = '" + mainSystem.getPatientID() + "'";
+                PreparedStatement ptst = conn.prepareStatement(sql);
+                ptst.execute();
+                conn.close();
+                JOptionPane.showMessageDialog(aPanel, "Patient's details updated successfully.", "Success", HEIGHT);
+
+            } catch (Exception e) {
+//            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+                System.out.println(e);
+            }
             populateTable();
             updateButton.setEnabled(false);
             viewEncountersButton.setEnabled(false);
@@ -370,47 +417,79 @@ public class ViewPatients extends javax.swing.JPanel {
 
     private void populateTable() {
 
-        PatientDirectory allPatients = mainSystem.getAllPatients();
-        DefaultTableModel model = (DefaultTableModel) patientsTable.getModel();
-        model.setRowCount(0);
+//        PatientDirectory allPatients = mainSystem.getAllPatients();
+//        DefaultTableModel model = (DefaultTableModel) patientsTable.getModel();
+//        model.setRowCount(0);
+//
+//        for (Patient p : allPatients.getAllPatients()) {
+//            Object[] rows = new Object[4];
+//
+//            rows[0] = p; // ID for Patient
+//            rows[1] = p.getLastName(); 
+//            rows[2] = p.getGender();
+//            rows[3] = p.getBloodGroup();
+//
+//            model.addRow(rows);
+//        }
+        PatientDirectory allPatients = new PatientDirectory();
+        try {
+            Object[] oConn = allPatients.getAllPatients();
+            ResultSet rs = (ResultSet) oConn[0];
+            Connection conn = (Connection) oConn[1];
 
-        for (Patient p : allPatients.getAllPatients()) {
-            Object[] rows = new Object[4];
+            DefaultTableModel model = (DefaultTableModel) patientsTable.getModel();
+            model.setRowCount(0);
+            while (rs.next()) {
+                Object o[] = {rs.getString("ID"),
+                    rs.getString("FirstName"),
+                    rs.getString("LastName"),
+                    rs.getString("Gender"),
+                    rs.getString("BloodGroup"),};
+                model.addRow(o);
+            }
+            conn.close();
 
-            rows[0] = p;
-            rows[1] = p.getLastName();
-            rows[2] = p.getGender();
-            rows[3] = p.getBloodGroup();
-
-            model.addRow(rows);
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
     private boolean validateUpdate() {
+//        boolean b = false;
+//        int selectedIndex = patientsTable.getSelectedRow();
+//        if (selectedIndex < 0) {
+//            JOptionPane.showMessageDialog(aPanel, "Please select patient to update.", "Error", HEIGHT);
+//        } else if (updateButton.isEnabled() == false) {
+//            JOptionPane.showMessageDialog(aPanel, "Please click \"View\" to enable update.",
+//                    "Error", HEIGHT);
+//        } else {
+//
+//            Patient selectedPatient = (Patient) patientsTable.getValueAt(selectedIndex, 0);
+//            Patient formerPatient = mainSystem.getaPatient();
+//
+//            if (selectedPatient != formerPatient) {
+//                JOptionPane.showMessageDialog(aPanel, "This update is only for "
+//                        + formerPatient.getFirstName() + " " + formerPatient.getLastName(), "Error", HEIGHT);
+//            } else if (firstNameField.getText().trim().equals("")) {
+//                JOptionPane.showMessageDialog(aPanel, "Please enter patient's first name", "Error", HEIGHT);
+//                firstNameField.requestFocus();
+//            } else if (lastNameField.getText().trim().equals("")) {
+//                JOptionPane.showMessageDialog(aPanel, "Please enter patient's last name", "Error", HEIGHT);
+//                lastNameField.requestFocus();
+//            } else {
+//                b = true;
+//            }
+//        }
+//        return b;
         boolean b = false;
-        int selectedIndex = patientsTable.getSelectedRow();
-        if (selectedIndex < 0) {
-            JOptionPane.showMessageDialog(aPanel, "Please select patient to update.", "Error", HEIGHT);
-        } else if (updateButton.isEnabled() == false) {
-            JOptionPane.showMessageDialog(aPanel, "Please click \"View\" to enable update.",
-                    "Error", HEIGHT);
+        if (firstNameField.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(aPanel, "Please enter patient's first name", "Error", HEIGHT);
+            firstNameField.requestFocus();
+        } else if (lastNameField.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(aPanel, "Please enter patient's last name", "Error", HEIGHT);
+            lastNameField.requestFocus();
         } else {
-
-            Patient selectedPatient = (Patient) patientsTable.getValueAt(selectedIndex, 0);
-            Patient formerPatient = mainSystem.getaPatient();
-
-            if (selectedPatient != formerPatient) {
-                JOptionPane.showMessageDialog(aPanel, "This update is only for "
-                        + formerPatient.getFirstName() + " " + formerPatient.getLastName(), "Error", HEIGHT);
-            } else if (firstNameField.getText().trim().equals("")) {
-                JOptionPane.showMessageDialog(aPanel, "Please enter patient's first name", "Error", HEIGHT);
-                firstNameField.requestFocus();
-            } else if (lastNameField.getText().trim().equals("")) {
-                JOptionPane.showMessageDialog(aPanel, "Please enter patient's last name", "Error", HEIGHT);
-                lastNameField.requestFocus();
-            } else {
-                b = true;
-            }
+            b = true;
         }
         return b;
     }

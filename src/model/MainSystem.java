@@ -6,6 +6,8 @@ package model;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.sql.ResultSet;
+
 
 /**
  *
@@ -23,6 +25,8 @@ public class MainSystem {
     private City aCity;
     private Hospital aHospital;
     private String adminType;
+    private String docID;
+    private String patientID;
 
     public MainSystem() {
         this.aPanel = new JPanel();
@@ -112,5 +116,23 @@ public class MainSystem {
     public void setAdminType(String adminType) {
         this.adminType = adminType;
     }
+
+    public String getDocID() {
+        return docID;
+    }
+
+    public void setDocID(String docID) {
+        this.docID = docID;
+    }
+
+    public String getPatientID() {
+        return patientID;
+    }
+
+    public void setPatientID(String patientID) {
+        this.patientID = patientID;
+    }
+
+    
 
 }
