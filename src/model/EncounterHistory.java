@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author adeda
  */
 public class EncounterHistory {
-    
+
     private ArrayList<Encounter> allEncounters;
 
     public EncounterHistory() {
@@ -29,7 +29,7 @@ public class EncounterHistory {
         Object[] oConn = new Object[3];
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/all_patients", "root", "Info5100");
 
             String sql = "select * from pat_" + id + "_enchistory ";
 
@@ -50,7 +50,7 @@ public class EncounterHistory {
     public void setAllEncounters(ArrayList<Encounter> allEncounters) {
         this.allEncounters = allEncounters;
     }
-    
+
     public void addEncounter(Encounter anEncounter) {
         this.allEncounters.add(anEncounter);
     }

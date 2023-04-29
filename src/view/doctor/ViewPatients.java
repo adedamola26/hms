@@ -426,9 +426,11 @@ public class ViewPatients extends javax.swing.JPanel {
                 String sql = "delete from patientsdirectory where ID= '" + selectedDoc + "'";
                 PreparedStatement ptst = conn.prepareStatement(sql);
                 ptst.executeUpdate();
+                
+                Connection conn2 = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/all_patients", "root", "Info5100");
 
                 String sql2 = "DROP TABLE pat_" + selectedDoc + "_enchistory";
-                PreparedStatement ptst2 = conn.prepareStatement(sql2);
+                PreparedStatement ptst2 = conn2.prepareStatement(sql2);
                 ptst2.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Patient deleted successfully", "Success", HEIGHT);
 

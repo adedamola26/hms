@@ -253,20 +253,22 @@ public class ViewCommunity extends javax.swing.JPanel {
         if (validateUpdate()) {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/community_directory", "root", "Info5100");
 
                 String tableName = String.valueOf(cityMenu.getSelectedItem()).replaceAll("[^a-zA-Z0-9]+", "_")
                         + "_communities";
-                String sql = "update " +tableName+" set Name = '" + communityField.getText()
+                String sql = "update " + tableName + " set Name = '" + communityField.getText()
                         + "', PostalCode = '" + postalCodeField.getText()
                         + "' where Name = '" + mainSystem.getPatientID() + "'";
                 PreparedStatement ptst = conn.prepareStatement(sql);
                 ptst.execute();
 
+                Connection conn2 = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hospital_directory", "root", "Info5100");
+
                 String query = "ALTER TABLE " + mainSystem.getPatientID().replaceAll("[^a-zA-Z0-9]+", "_")
                         + "_hospitals RENAME TO " + communityField.getText().replaceAll("[^a-zA-Z0-9]+", "_") + "_hospitals";
 
-                Statement stmt = conn.createStatement();
+                Statement stmt = conn2.createStatement();
                 stmt.executeUpdate(query);
                 conn.close();
                 JOptionPane.showMessageDialog(this, "Community's details updated successfully.", "Success", HEIGHT);
@@ -295,7 +297,7 @@ public class ViewCommunity extends javax.swing.JPanel {
 
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/community_directory", "root", "Info5100");
 
                 String tableName = String.valueOf(cityMenu.getSelectedItem()).replaceAll("[^a-zA-Z0-9]+", "_")
                         + "_communities";
@@ -309,6 +311,8 @@ public class ViewCommunity extends javax.swing.JPanel {
 
                 ptst.executeUpdate();
 
+                Connection conn2 = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hospital_directory", "root", "Info5100");
+
                 String tableName2 = communityField.getText().replaceAll("[^a-zA-Z0-9]+", "_") + "_hospitals";
                 String sql2 = "CREATE TABLE " + tableName2 + " ("
                         + "Name VARCHAR(255) NOT NULL,"
@@ -316,7 +320,7 @@ public class ViewCommunity extends javax.swing.JPanel {
                         + "PRIMARY KEY (Name),"
                         + "UNIQUE (Name)"
                         + ")";
-                PreparedStatement ptst2 = conn.prepareStatement(sql2);
+                PreparedStatement ptst2 = conn2.prepareStatement(sql2);
                 ptst2.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Community created successfully!", "Success", HEIGHT);
                 clearFields();
@@ -350,7 +354,7 @@ public class ViewCommunity extends javax.swing.JPanel {
             try {
                 String selectedDoc = String.valueOf(communityTable.getValueAt(selectedIndex, 0));
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/community_directory", "root", "Info5100");
 
                 String tableName = String.valueOf(cityMenu.getSelectedItem()).replaceAll("[^a-zA-Z0-9]+", "_")
                         + "_communities";
@@ -358,8 +362,10 @@ public class ViewCommunity extends javax.swing.JPanel {
                 PreparedStatement ptst = conn.prepareStatement(sql);
                 ptst.executeUpdate();
 
+                Connection conn2 = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hospital_directory", "root", "Info5100");
+
                 String sql2 = "DROP TABLE " + selectedDoc.replaceAll("[^a-zA-Z0-9]+", "_") + "_hospitals";
-                PreparedStatement ptst2 = conn.prepareStatement(sql2);
+                PreparedStatement ptst2 = conn2.prepareStatement(sql2);
                 ptst2.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Community deleted successfully", "Success", HEIGHT);
 
@@ -418,7 +424,7 @@ public class ViewCommunity extends javax.swing.JPanel {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/community_directory", "root", "Info5100");
 
             String sql = "select * from " + city.replaceAll("[^a-zA-Z0-9]+", "_") + "_communities";
 

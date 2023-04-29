@@ -252,7 +252,7 @@ public class RecordEncounter extends javax.swing.JPanel {
             String dt = fmt.format(dateChooser.getDate());
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/all_patients", "root", "Info5100");
 
                 String sql = "insert into pat_" + mainSystem.getPatientID() + "_enchistory values (?,?,?,?,?,?,?)";
                 PreparedStatement ptst = conn.prepareStatement(sql);

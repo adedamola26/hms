@@ -230,6 +230,8 @@ public class AddPatient extends javax.swing.JPanel {
                     generatedId = String.valueOf(rs.getInt(1));
                 }
 
+                Connection conn2 = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/all_patients", "root", "Info5100");
+
                 String sql2 = "create table pat_" + generatedId + "_EncHistory ("
                         + "Date varchar(255),"
                         + "Temperature varchar(255),"
@@ -238,7 +240,7 @@ public class AddPatient extends javax.swing.JPanel {
                         + "Complaint varchar(255),"
                         + "Diagnosis varchar(255),"
                         + "Prescription varchar(255))";
-                PreparedStatement ptst2 = conn.prepareStatement(sql2);
+                PreparedStatement ptst2 = conn2.prepareStatement(sql2);
                 mainSystem.setPatientID(generatedId);
                 ptst2.executeUpdate();
                 conn.close();

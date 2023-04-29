@@ -203,6 +203,8 @@ public class ViewCities extends javax.swing.JPanel {
 
                 ptst.executeUpdate();
 
+                Connection conn2 = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/community_directory", "root", "Info5100");
+
                 String tableName = nameField.getText().replaceAll("[^a-zA-Z0-9]+", "_") + "_communities";
                 String sql2 = "CREATE TABLE " + tableName + " ("
                         + "Name VARCHAR(255) NOT NULL,"
@@ -210,7 +212,7 @@ public class ViewCities extends javax.swing.JPanel {
                         + "PRIMARY KEY (Name),"
                         + "UNIQUE (Name)"
                         + ")";
-                PreparedStatement ptst2 = conn.prepareStatement(sql2);
+                PreparedStatement ptst2 = conn2.prepareStatement(sql2);
                 ptst2.executeUpdate();
                 JOptionPane.showMessageDialog(this, "City created successfully!", "Success", HEIGHT);
                 clearFields();
@@ -240,9 +242,10 @@ public class ViewCities extends javax.swing.JPanel {
                 String sql = "delete from citydirectory where Name= '" + selectedDoc + "'";
                 PreparedStatement ptst = conn.prepareStatement(sql);
                 ptst.executeUpdate();
+                Connection conn2 = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/community_directory", "root", "Info5100");
 
                 String sql2 = "DROP TABLE " + selectedDoc.replaceAll("[^a-zA-Z0-9]+", "_") + "_communities";
-                PreparedStatement ptst2 = conn.prepareStatement(sql2);
+                PreparedStatement ptst2 = conn2.prepareStatement(sql2);
                 ptst2.executeUpdate();
                 JOptionPane.showMessageDialog(this, "City deleted successfully", "Success", HEIGHT);
 
@@ -289,11 +292,12 @@ public class ViewCities extends javax.swing.JPanel {
                         + "' where Name = '" + mainSystem.getPatientID() + "'";
                 PreparedStatement ptst = conn.prepareStatement(sql);
                 ptst.execute();
+                Connection conn2 = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/community_directory", "root", "Info5100");
 
                 String query = "ALTER TABLE " + mainSystem.getPatientID().replaceAll("[^a-zA-Z0-9]+", "_")
                         + "_communities RENAME TO " + nameField.getText().replaceAll("[^a-zA-Z0-9]+", "_") + "_communities";
 
-                Statement stmt = conn.createStatement();
+                Statement stmt = conn2.createStatement();
                 stmt.executeUpdate(query);
                 conn.close();
                 JOptionPane.showMessageDialog(this, "City's details updated successfully.", "Success", HEIGHT);

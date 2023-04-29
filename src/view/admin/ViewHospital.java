@@ -256,7 +256,7 @@ public class ViewHospital extends javax.swing.JPanel {
         if (validateUpdate()) {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hospital_directory", "root", "Info5100");
 
                 String tableName = String.valueOf(communityMenu.getSelectedItem()).replaceAll("[^a-zA-Z0-9]+", "_")
                         + "_hospitals";
@@ -293,7 +293,7 @@ public class ViewHospital extends javax.swing.JPanel {
 
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hospital_directory", "root", "Info5100");
 
                 String tableName = String.valueOf(communityMenu.getSelectedItem()).replaceAll("[^a-zA-Z0-9]+", "_")
                         + "_hospitals";
@@ -360,7 +360,7 @@ public class ViewHospital extends javax.swing.JPanel {
             try {
                 String selectedDoc = String.valueOf(hospitalTable.getValueAt(selectedIndex, 0));
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hospital_directory", "root", "Info5100");
 
                 String tableName = String.valueOf(communityMenu.getSelectedItem()).replaceAll("[^a-zA-Z0-9]+", "_")
                         + "_hospitals";
@@ -405,7 +405,7 @@ public class ViewHospital extends javax.swing.JPanel {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hospital_directory", "root", "Info5100");
 
             String sql = "select * from " + city.replaceAll("[^a-zA-Z0-9]+", "_") + "_hospitals";
 
@@ -456,7 +456,7 @@ public class ViewHospital extends javax.swing.JPanel {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/community_directory", "root", "Info5100");
             String tableName = String.valueOf(cityMenu.getSelectedItem()).replaceAll("[^a-zA-Z0-9]+", "_")
                     + "_communities";
             String sql = "select * from " + tableName;
