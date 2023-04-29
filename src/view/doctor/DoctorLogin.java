@@ -189,4 +189,6 @@ public class DoctorLogin extends javax.swing.JPanel {
         }
         return o;
     }
+    
+    
 }

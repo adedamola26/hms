@@ -4,6 +4,10 @@
  */
 package view.patients;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -164,13 +168,7 @@ public class SearchHospital extends javax.swing.JPanel {
     private void cityMenuItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cityMenuItemStateChanged
         // TODO add your handling code here:
         communityMenu.removeAllItems();
-        City selectedCity = (City) cityMenu.getSelectedItem();
-
-        CommunityDirectory allCommunities = selectedCity.getAllCommunities();
-
-        for (Community c : allCommunities.getAllCommunities()) {
-            communityMenu.addItem(c);
-        }
+        populateCommunityMenu();
     }//GEN-LAST:event_cityMenuItemStateChanged
 
     private void searchFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchFieldFocusGained
@@ -198,9 +196,9 @@ public class SearchHospital extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel cityLabel;
-    private javax.swing.JComboBox<City> cityMenu;
+    private javax.swing.JComboBox<String> cityMenu;
     private javax.swing.JLabel communityLabel;
-    private javax.swing.JComboBox<Community> communityMenu;
+    private javax.swing.JComboBox<String> communityMenu;
     private javax.swing.JTable hospitalTable;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField searchField;
@@ -208,22 +206,77 @@ public class SearchHospital extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void populateCityMenu() {
-        for (City c : mainSystem.getAllCities().getAllCities()) {
-            cityMenu.addItem(c);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+
+            String sql = "select * from citydirectory";
+
+            PreparedStatement ptst = conn.prepareStatement(sql);
+            ResultSet rs = ptst.executeQuery();
+            while (rs.next()) {
+                cityMenu.addItem(rs.getString("Name"));
+            }
+
+            conn.close();
+
+        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+            System.out.println(e);
+
         }
     }
 
     private void populateTable() {
-        DefaultTableModel model = (DefaultTableModel) hospitalTable.getModel();
-        model.setRowCount(0);
-        Community community = (Community) communityMenu.getSelectedItem();
+        String city = String.valueOf(communityMenu.getSelectedItem());
 
-        HospitalDirectory hospitals = community.getAllHospitals();
-        for (Hospital h : hospitals.getAllHospitals()) {
-            Object[] rows = new Object[3];
-            rows[0] = h.getName();
-            rows[1] = h.getAddress();
-            model.addRow(rows);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+
+            String sql = "select * from " + city.replaceAll("[^a-zA-Z0-9]+", "_") + "_hospitals";
+
+            PreparedStatement ptst = conn.prepareStatement(sql);
+            ResultSet rs = ptst.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) hospitalTable.getModel();
+            model.setRowCount(0);
+            while (rs.next()) {
+                Object o[] = {rs.getString("Name"),
+                    rs.getString("Address")};
+                model.addRow(o);
+            }
+
+            conn.close();
+
+        } catch (java.sql.SQLSyntaxErrorException e) {
+        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+            System.out.println(e);
+
+        }
+    }
+
+    private void populateCommunityMenu() {
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+            String tableName = String.valueOf(cityMenu.getSelectedItem()).replaceAll("[^a-zA-Z0-9]+", "_")
+                    + "_communities";
+            String sql = "select * from " + tableName;
+
+            PreparedStatement ptst = conn.prepareStatement(sql);
+            ResultSet rs = ptst.executeQuery();
+            while (rs.next()) {
+                communityMenu.addItem(rs.getString("Name"));
+            }
+
+            conn.close();
+
+        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+            System.out.println(e);
+
         }
     }
 }

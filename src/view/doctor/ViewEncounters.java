@@ -259,18 +259,26 @@ public class ViewEncounters extends javax.swing.JPanel {
         if (selectedIndex < 0) {
             JOptionPane.showMessageDialog(aPanel, "Please select encounter to view.", "Error", HEIGHT);
         } else {
-            Encounter selectedEncounter = (Encounter) encounterTable.getValueAt(selectedIndex, 2);
-            DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-            String visitDate = fmt.format(selectedEncounter.getVisitDate());
-            VitalSign vitalSign = selectedEncounter.getVitalSign();
+//            Encounter selectedEncounter = (Encounter) encounterTable.getValueAt(selectedIndex, 2);
+//            DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+//            String visitDate = fmt.format(selectedEncounter.getVisitDate());
+//            VitalSign vitalSign = selectedEncounter.getVitalSign();
 
-            dateField.setText(visitDate);
-            temperatureField.setText(String.valueOf(vitalSign.getTemperature()));
-            pulseField.setText(String.valueOf(vitalSign.getPulseRate()));
-            complaintField.setText(selectedEncounter.getComplaint());
-            diagnosisField.setText(selectedEncounter.getDiagnosis());
-            prescriptionField.setText(selectedEncounter.getPrescription());
-            doctorField.setText(selectedEncounter.getAttendingDoc());
+//            dateField.setText(visitDate);
+//            temperatureField.setText(String.valueOf(vitalSign.getTemperature()));
+//            pulseField.setText(String.valueOf(vitalSign.getPulseRate()));
+//            complaintField.setText(selectedEncounter.getComplaint());
+//            diagnosisField.setText(selectedEncounter.getDiagnosis());
+//            prescriptionField.setText(selectedEncounter.getPrescription());
+//            doctorField.setText(selectedEncounter.getAttendingDoc());
+            
+            dateField.setText(String.valueOf(encounterTable.getValueAt(selectedIndex, 0)));
+            temperatureField.setText(String.valueOf(encounterTable.getValueAt(selectedIndex, 1)));
+            pulseField.setText(String.valueOf(encounterTable.getValueAt(selectedIndex, 2)));
+            complaintField.setText(String.valueOf(encounterTable.getValueAt(selectedIndex, 4)));
+            diagnosisField.setText(String.valueOf(encounterTable.getValueAt(selectedIndex, 5)));
+            prescriptionField.setText(String.valueOf(encounterTable.getValueAt(selectedIndex, 6)));
+            doctorField.setText(String.valueOf(encounterTable.getValueAt(selectedIndex, 3)));
         }
     }//GEN-LAST:event_viewButtonActionPerformed
 

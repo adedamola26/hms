@@ -6,6 +6,10 @@ package view.doctor;
 
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -35,7 +39,7 @@ public class DoctorDashboard extends javax.swing.JPanel {
         this.aPanel = mainSystem.getaPanel();
         this.allCities = mainSystem.getAllCities();
 //        this.attendingDoctor = mainSystem.getADoctor();
-//        titleLabel.setText("Welcome Dr. " + docName);
+        titleLabel.setText("Welcome Dr. " + getDoctorName(mainSystem.getDocID()));
 //        this.aFrame = mainSystem.getaFrame();
         disableIrrelevantButtons();
     }
@@ -175,5 +179,26 @@ public class DoctorDashboard extends javax.swing.JPanel {
                 myButton.setEnabled(true);
             }
         }
+    }
+    
+    private String getDoctorName(String id){
+        String attendingDoctor = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+            String sql = "select * from doctorsdirectory where ID = '" +id+ "'" ;
+
+            PreparedStatement ptst = conn.prepareStatement(sql);
+            ResultSet rs = ptst.executeQuery();
+            rs.next();
+            attendingDoctor = rs.getString("FirstName"); //+ " " + rs.getString("LastName");
+            conn.close();
+
+        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+            System.out.println(e);
+
+        }
+        return attendingDoctor;
     }
 }

@@ -67,6 +67,7 @@ public class AddPatient extends javax.swing.JPanel {
         firstNameField = new javax.swing.JTextField();
         lastNameField = new javax.swing.JTextField();
         errorLabel = new javax.swing.JLabel();
+        backButton = new javax.swing.JButton();
 
         titleLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -115,6 +116,13 @@ public class AddPatient extends javax.swing.JPanel {
 
         errorLabel.setForeground(new java.awt.Color(255, 51, 51));
 
+        backButton.setText("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -150,7 +158,9 @@ public class AddPatient extends javax.swing.JPanel {
                         .addGap(373, 373, 373)
                         .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(220, 220, 220)
+                        .addGap(38, 38, 38)
+                        .addComponent(backButton)
+                        .addGap(107, 107, 107)
                         .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(425, Short.MAX_VALUE))
         );
@@ -158,7 +168,9 @@ public class AddPatient extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(backButton))
                 .addGap(82, 82, 82)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(firstNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -218,7 +230,7 @@ public class AddPatient extends javax.swing.JPanel {
                     generatedId = String.valueOf(rs.getInt(1));
                 }
 
-                String sql2 = "create table ID_" + generatedId + "_EncHistory ("
+                String sql2 = "create table pat_" + generatedId + "_EncHistory ("
                         + "Date varchar(255),"
                         + "Temperature varchar(255),"
                         + "PulseRate varchar(255),"
@@ -283,8 +295,24 @@ public class AddPatient extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_lastNameFieldKeyPressed
 
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        // TODO add your handling code here:
+        if (previousCard.contains("CRUDPatient")) {
+            CRUDPatient crudPatient = new CRUDPatient(mainSystem);
+            aPanel.add(crudPatient);
+            CardLayout layout = (CardLayout) aPanel.getLayout();
+            layout.next(aPanel);
+        } else {
+            DoctorDashboard recordEncounter = new DoctorDashboard(mainSystem);
+            aPanel.add(recordEncounter);
+            CardLayout layout = (CardLayout) aPanel.getLayout();
+            layout.next(aPanel);
+        }
+    }//GEN-LAST:event_backButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backButton;
     private javax.swing.JLabel bloodLabel;
     private javax.swing.JComboBox<String> bloodMenu;
     private javax.swing.JLabel errorLabel;

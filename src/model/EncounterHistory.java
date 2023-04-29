@@ -31,7 +31,7 @@ public class EncounterHistory {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
-            String sql = "select * from id_" + id + "_enchistory ";
+            String sql = "select * from pat_" + id + "_enchistory ";
 
             PreparedStatement ptst = conn.prepareStatement(sql);
             ResultSet rs = ptst.executeQuery();

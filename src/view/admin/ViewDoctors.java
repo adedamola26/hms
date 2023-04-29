@@ -5,8 +5,12 @@
 package view.admin;
 
 import java.awt.CardLayout;
+import static java.awt.image.ImageObserver.HEIGHT;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -228,22 +232,22 @@ public class ViewDoctors extends javax.swing.JPanel {
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
 
-        Hospital aHospital = mainSystem.getaHospital();
-        Community aCommunity = mainSystem.getaCommunity();
-        HospitalDirectory allHospitals = aCommunity.getAllHospitals();
-        allHospitals.addHospital(aHospital);
-        aCommunity.setAllHospitals(allHospitals);
+//        Hospital aHospital = mainSystem.getaHospital();
+//        Community aCommunity = mainSystem.getaCommunity();
+//        HospitalDirectory allHospitals = aCommunity.getAllHospitals();
+//        allHospitals.addHospital(aHospital);
+//        aCommunity.setAllHospitals(allHospitals);
+//
+//        City aCity = mainSystem.getaCity();
+//        CommunityDirectory allCommunities = aCity.getAllCommunities();
+//        allCommunities.addCommunity(aCommunity);
+//        aCity.setAllCommunities(allCommunities);
+//
+//        CityDirectory allCities = mainSystem.getAllCities();
+//        allCities.addCity(aCity);
+//        mainSystem.setAllCities(allCities);
 
-        City aCity = mainSystem.getaCity();
-        CommunityDirectory allCommunities = aCity.getAllCommunities();
-        allCommunities.addCommunity(aCommunity);
-        aCity.setAllCommunities(allCommunities);
-
-        CityDirectory allCities = mainSystem.getAllCities();
-        allCities.addCity(aCity);
-        mainSystem.setAllCities(allCities);
-
-        ViewHospital viewPatients = new ViewHospital(mainSystem);
+        SystemAdminDashboard viewPatients = new SystemAdminDashboard(mainSystem);
         aPanel.add(viewPatients);
         CardLayout layout = (CardLayout) aPanel.getLayout();
         layout.next(aPanel);
@@ -255,18 +259,13 @@ public class ViewDoctors extends javax.swing.JPanel {
         if (selectedIndex < 0) {
             JOptionPane.showMessageDialog(aPanel, "Please select encounter to view.", "Error", HEIGHT);
         } else {
-            Doctor selectedDoctor = (Doctor) doctorTable.getValueAt(selectedIndex, 0);
-            Hospital selectedHospital = mainSystem.getaHospital();
-            DoctorDirectory allDoctors = selectedHospital.getAllDoctors();
-            allDoctors.removeDoctor(selectedDoctor);
-            selectedHospital.setAllDoctors(allDoctors);
-            mainSystem.setaHospital(selectedHospital);
-            mainSystem.setADoctor(selectedDoctor);
+            String id = String.valueOf(doctorTable.getValueAt(selectedIndex, 0));
 
-            firstNameField.setText(selectedDoctor.getFirstName());
-            lastNameField.setText(selectedDoctor.getLastName());
-            usernameField.setText(selectedDoctor.getUsername());
-            passwordField.setText(selectedDoctor.getPassword());
+            firstNameField.setText(String.valueOf(doctorTable.getValueAt(selectedIndex, 1)));
+            lastNameField.setText(String.valueOf(doctorTable.getValueAt(selectedIndex, 2)));
+            usernameField.setText(String.valueOf(doctorTable.getValueAt(selectedIndex, 3)));
+            passwordField.setText(String.valueOf(doctorTable.getValueAt(selectedIndex, 4)));
+            mainSystem.setDocID(id);
             backButton.setEnabled(false);
             viewButton.setEnabled(false);
             updateButton.setEnabled(true);
@@ -279,72 +278,94 @@ public class ViewDoctors extends javax.swing.JPanel {
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         // TODO add your handling code here:
-        Doctor selectedDoctor = mainSystem.getADoctor();
-        Hospital selectedHospital = mainSystem.getaHospital();
-        DoctorDirectory allDoctors = selectedHospital.getAllDoctors();
+        if (validateAddition()) {
 
-        selectedDoctor.setFirstName(firstNameField.getText());
-        selectedDoctor.setLastName(lastNameField.getText());
-        selectedDoctor.setUsername(usernameField.getText());
-        selectedDoctor.setPassword(passwordField.getText());
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
-        allDoctors.addDoctor(selectedDoctor);
-        selectedHospital.setAllDoctors(allDoctors);
-        mainSystem.setaHospital(selectedHospital);
+                String sql = "update doctorsdirectory set FirstName = '" + firstNameField.getText()
+                        + "', LastName = '" + lastNameField.getText()
+                        + "', Username = '" + usernameField.getText()
+                        + "', Password = '" + passwordField.getText()
+                        + "' where ID = '" + mainSystem.getDocID() + "'";
+                PreparedStatement ptst = conn.prepareStatement(sql);
+                ptst.execute();
+                conn.close();
+                JOptionPane.showMessageDialog(aPanel, "Doctor's details updated successfully.", "Success", HEIGHT);
+                populateTable();
+                clearFields();
 
-        JOptionPane.showMessageDialog(aPanel, "Doctor's details updated successfully.", "Success", HEIGHT);
-        populateTable();
-        clearFields();
-        updateButton.setEnabled(false);
-        backButton.setEnabled(true);
-        viewButton.setEnabled(true);
-        addButton.setEnabled(true);
-        deleteButton.setEnabled(true);
+            } catch (Exception e) {
+//            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+                System.out.println(e);
+            }
 
-        doctorTable.setRowSelectionAllowed(true);
+            updateButton.setEnabled(false);
+            backButton.setEnabled(true);
+            viewButton.setEnabled(true);
+            addButton.setEnabled(true);
+            deleteButton.setEnabled(true);
+
+            doctorTable.setRowSelectionAllowed(true);
+        }
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
         if (validateAddition()) {
 
-            Doctor newDoctor = new Doctor();
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
-            newDoctor.setFirstName(firstNameField.getText());
-            newDoctor.setLastName(lastNameField.getText());
-            newDoctor.setUsername(usernameField.getText());
-            newDoctor.setPassword(passwordField.getText());
+                String sql = "insert into doctorsdirectory (FirstName, LastName, Username, Password)"
+                        + " values (?,?,?,?)";
+                PreparedStatement ptst = conn.prepareStatement(sql);
 
-            Hospital selectedHospital = mainSystem.getaHospital();
-            DoctorDirectory allDoctors = selectedHospital.getAllDoctors();
+                ptst.setString(1, firstNameField.getText());
+                ptst.setString(2, lastNameField.getText());
+                ptst.setString(3, usernameField.getText());
+                ptst.setString(4, passwordField.getText());
 
-            allDoctors.addDoctor(newDoctor);
-            selectedHospital.setAllDoctors(allDoctors);
-            mainSystem.setaHospital(selectedHospital);
+                ptst.executeUpdate();
 
-            JOptionPane.showMessageDialog(aPanel, "Doctor added successfully.", "Success", HEIGHT);
-            populateTable();
-            clearFields();
+                conn.close();
+                JOptionPane.showMessageDialog(aPanel, "Doctor added successfully.", "Success", HEIGHT);
+                populateTable();
+                clearFields();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e, "sjkd", HEIGHT);
+            }
+
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
+
         int selectedIndex = doctorTable.getSelectedRow();
         if (selectedIndex < 0) {
             JOptionPane.showMessageDialog(aPanel, "Please select doctor to delete.", "Error", HEIGHT);
         } else {
-            Doctor selectedDoctor = (Doctor) doctorTable.getValueAt(selectedIndex, 0);
+            try {
+                String selectedDoc = String.valueOf(doctorTable.getValueAt(selectedIndex, 0));
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
-            Hospital selectedHospital = mainSystem.getaHospital();
-            DoctorDirectory allDoctors = selectedHospital.getAllDoctors();
-            allDoctors.removeDoctor(selectedDoctor);
+                String sql = "delete from doctorsdirectory where ID= '" + selectedDoc + "'";
+                PreparedStatement ptst = conn.prepareStatement(sql);
+                ptst.executeUpdate();
 
-            selectedHospital.setAllDoctors(allDoctors);
-            mainSystem.setaHospital(selectedHospital);
+                populateTable();
 
-            JOptionPane.showMessageDialog(aPanel, "Doctor deleted successfully.", "Success", HEIGHT);
-            populateTable();
+                conn.close();
+                JOptionPane.showMessageDialog(aPanel, "Doctor deleted successfully.", "Success", HEIGHT);
+                populateTable();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e, "sjkd", HEIGHT);
+            }
+
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -388,7 +409,6 @@ public class ViewDoctors extends javax.swing.JPanel {
 //        } catch (NullPointerException e) {
 //
 //        }
-
         DoctorDirectory allDocs = new DoctorDirectory();
         try {
             Object[] oConn = allDocs.getAllDoctors();

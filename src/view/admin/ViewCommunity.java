@@ -6,6 +6,11 @@ package view.admin;
 
 import java.awt.CardLayout;
 import static java.awt.image.ImageObserver.HEIGHT;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -139,12 +144,6 @@ public class ViewCommunity extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(329, 329, 329)
-                .addComponent(updateButton)
-                .addGap(194, 194, 194)
-                .addComponent(addButton)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(161, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -164,16 +163,22 @@ public class ViewCommunity extends javax.swing.JPanel {
                             .addComponent(cityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(postalCodeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(116, 116, 116)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cityMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(communityField, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(postalCodeField, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(communityField, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                            .addComponent(postalCodeField, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                            .addComponent(cityMenu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(304, 304, 304)
                         .addComponent(viewButton)
                         .addGap(227, 227, 227)
                         .addComponent(deleteButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(329, 329, 329)
+                .addComponent(updateButton)
+                .addGap(194, 194, 194)
+                .addComponent(addButton)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,7 +197,7 @@ public class ViewCommunity extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cityMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(communityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(communityField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -204,7 +209,7 @@ public class ViewCommunity extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(updateButton)
                     .addComponent(addButton))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -219,7 +224,9 @@ public class ViewCommunity extends javax.swing.JPanel {
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
         // TODO add your handling code here:
+
         int selectedIndex = communityTable.getSelectedRow();
+
         if (selectedIndex < 0) {
             JOptionPane.showMessageDialog(aPanel, "Please select community to view.", "Error", HEIGHT);
         } else {
@@ -227,22 +234,11 @@ public class ViewCommunity extends javax.swing.JPanel {
             addButton.setEnabled(false);
 
             communityTable.setRowSelectionAllowed(false);
+            String id = String.valueOf(communityTable.getValueAt(selectedIndex, 0));
 
-            CityDirectory allCities = mainSystem.getAllCities();
-            City selectedCity = (City) cityMenu.getSelectedItem();
-            CommunityDirectory allCommunities = selectedCity.getAllCommunities();
-            Community selectedCommunity = (Community) communityTable.getValueAt(selectedIndex, 0);
-
-            allCommunities.removeCommunity(selectedCommunity);
-            allCities.removeCity(selectedCity);
-            selectedCity.setAllCommunities(allCommunities);
-
-            mainSystem.setAllCities(allCities);
-            mainSystem.setaCity(selectedCity);
-            mainSystem.setaCommunity(selectedCommunity);
-
-            communityField.setText(selectedCommunity.getName());
-            postalCodeField.setText(selectedCommunity.getPostalCode());
+            mainSystem.setPatientID(id);
+            communityField.setText(id);
+            postalCodeField.setText(String.valueOf(communityTable.getValueAt(selectedIndex, 1)));
 
             cityMenu.setEnabled(false);
             viewButton.setEnabled(false);
@@ -255,32 +251,40 @@ public class ViewCommunity extends javax.swing.JPanel {
         // TODO add your handling code here:
 
         if (validateUpdate()) {
-            Community selectedcommunity = mainSystem.getaCommunity();
-            City selectedCity = mainSystem.getaCity();
-            CommunityDirectory allCommunities = selectedCity.getAllCommunities();
-            CityDirectory allCities = mainSystem.getAllCities();
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
-            selectedcommunity.setName(communityField.getText());
-            selectedcommunity.setPostalCode(postalCodeField.getText());
+                String tableName = String.valueOf(cityMenu.getSelectedItem()).replaceAll("[^a-zA-Z0-9]+", "_")
+                        + "_communities";
+                String sql = "update " +tableName+" set Name = '" + communityField.getText()
+                        + "', PostalCode = '" + postalCodeField.getText()
+                        + "' where Name = '" + mainSystem.getPatientID() + "'";
+                PreparedStatement ptst = conn.prepareStatement(sql);
+                ptst.execute();
 
-            allCommunities.addCommunity(selectedcommunity);
-            selectedCity.setAllCommunities(allCommunities);
+                String query = "ALTER TABLE " + mainSystem.getPatientID().replaceAll("[^a-zA-Z0-9]+", "_")
+                        + "_hospitals RENAME TO " + communityField.getText().replaceAll("[^a-zA-Z0-9]+", "_") + "_hospitals";
 
-            allCities.addCity(selectedCity);
+                Statement stmt = conn.createStatement();
+                stmt.executeUpdate(query);
+                conn.close();
+                JOptionPane.showMessageDialog(this, "Community's details updated successfully.", "Success", HEIGHT);
 
-            mainSystem.setAllCities(allCities);
-            
-            JOptionPane.showMessageDialog(aPanel, "Community's details updated successfully.", "Success", HEIGHT);
+            } catch (Exception e) {
+//            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+                System.out.println(e);
+            }
             populateTable();
+
             updateButton.setEnabled(false);
             addButton.setEnabled(true);
             viewButton.setEnabled(true);
             cityMenu.setEnabled(true);
             communityTable.setRowSelectionAllowed(true);
             clearFields();
-                        backButton.setEnabled(true);
-                                    deleteButton.setEnabled(true);
-
+            backButton.setEnabled(true);
+            deleteButton.setEnabled(true);
 
         }
     }//GEN-LAST:event_updateButtonActionPerformed
@@ -288,25 +292,43 @@ public class ViewCommunity extends javax.swing.JPanel {
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
         if (validateAddition()) {
-            Community newCommunity = new Community();
 
-            newCommunity.setName(communityField.getText());
-            newCommunity.setPostalCode(postalCodeField.getText());
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
-            CityDirectory allCities = mainSystem.getAllCities();
-            City selectedCity = (City) cityMenu.getSelectedItem();
-            allCities.removeCity(selectedCity);
+                String tableName = String.valueOf(cityMenu.getSelectedItem()).replaceAll("[^a-zA-Z0-9]+", "_")
+                        + "_communities";
 
-            CommunityDirectory allCommunities = selectedCity.getAllCommunities();
+                String sql = "insert into " + tableName + " (Name, PostalCode)"
+                        + " values (?,?)";
+                PreparedStatement ptst = conn.prepareStatement(sql);
 
-            allCommunities.addCommunity(newCommunity);
+                ptst.setString(1, communityField.getText());
+                ptst.setString(2, postalCodeField.getText());
 
-            selectedCity.setAllCommunities(allCommunities);
-            allCities.addCity(selectedCity);
-            mainSystem.setAllCities(allCities);
-            JOptionPane.showMessageDialog(aPanel, "Community added successfully.", "Success", HEIGHT);
-            populateTable();
-            clearFields();
+                ptst.executeUpdate();
+
+                String tableName2 = communityField.getText().replaceAll("[^a-zA-Z0-9]+", "_") + "_hospitals";
+                String sql2 = "CREATE TABLE " + tableName2 + " ("
+                        + "Name VARCHAR(255) NOT NULL,"
+                        + "Address VARCHAR(255),"
+                        + "PRIMARY KEY (Name),"
+                        + "UNIQUE (Name)"
+                        + ")";
+                PreparedStatement ptst2 = conn.prepareStatement(sql2);
+                ptst2.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Community created successfully!", "Success", HEIGHT);
+                clearFields();
+                populateTable();
+                conn.close();
+
+            } catch (java.sql.SQLIntegrityConstraintViolationException e) {
+                JOptionPane.showMessageDialog(this, "Community already exists", "Success", HEIGHT);
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
@@ -320,26 +342,34 @@ public class ViewCommunity extends javax.swing.JPanel {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
-        
+
         int selectedIndex = communityTable.getSelectedRow();
         if (selectedIndex < 0) {
-            JOptionPane.showMessageDialog(aPanel, "Please select community to delete.", "Error", HEIGHT);
+            JOptionPane.showMessageDialog(this, "Please select community to delete.", "Error", HEIGHT);
         } else {
-            Community selectedCommunity = (Community) communityTable.getValueAt(selectedIndex, 0);
-            
-            CityDirectory allCities = mainSystem.getAllCities();
-            City selectedCity = (City) cityMenu.getSelectedItem();
-            allCities.removeCity(selectedCity);
+            try {
+                String selectedDoc = String.valueOf(communityTable.getValueAt(selectedIndex, 0));
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
-            CommunityDirectory allCommunities = selectedCity.getAllCommunities();
+                String tableName = String.valueOf(cityMenu.getSelectedItem()).replaceAll("[^a-zA-Z0-9]+", "_")
+                        + "_communities";
+                String sql = "delete from " + tableName + " where Name= '" + selectedDoc + "'";
+                PreparedStatement ptst = conn.prepareStatement(sql);
+                ptst.executeUpdate();
 
-            allCommunities.removeCommunity(selectedCommunity);
+                String sql2 = "DROP TABLE " + selectedDoc.replaceAll("[^a-zA-Z0-9]+", "_") + "_hospitals";
+                PreparedStatement ptst2 = conn.prepareStatement(sql2);
+                ptst2.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Community deleted successfully", "Success", HEIGHT);
 
-            selectedCity.setAllCommunities(allCommunities);
-            allCities.addCity(selectedCity);
-            mainSystem.setAllCities(allCities);
-            JOptionPane.showMessageDialog(aPanel, "Community deleted successfully.", "Success", HEIGHT);
-            populateTable();
+                populateTable();
+
+                conn.close();
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e, "sjkd", HEIGHT);
+            }
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -348,7 +378,7 @@ public class ViewCommunity extends javax.swing.JPanel {
     private javax.swing.JButton addButton;
     private javax.swing.JButton backButton;
     private javax.swing.JLabel cityLabel;
-    private javax.swing.JComboBox<City> cityMenu;
+    private javax.swing.JComboBox<String> cityMenu;
     private javax.swing.JTextField communityField;
     private javax.swing.JLabel communityLabel;
     private javax.swing.JTable communityTable;
@@ -362,31 +392,59 @@ public class ViewCommunity extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void populateCityMenu() {
-        for (City c : mainSystem.getAllCities().getAllCities()) {
-            cityMenu.addItem(c);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+
+            String sql = "select * from citydirectory";
+
+            PreparedStatement ptst = conn.prepareStatement(sql);
+            ResultSet rs = ptst.executeQuery();
+            while (rs.next()) {
+                cityMenu.addItem(rs.getString("Name"));
+            }
+
+            conn.close();
+
+        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+            System.out.println(e);
+
         }
     }
 
     private void populateTable() {
-        DefaultTableModel model = (DefaultTableModel) communityTable.getModel();
-        model.setRowCount(0);
+        String city = String.valueOf(cityMenu.getSelectedItem());
 
-        City city = (City) cityMenu.getSelectedItem();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
-        CommunityDirectory allCommunities = city.getAllCommunities();
+            String sql = "select * from " + city.replaceAll("[^a-zA-Z0-9]+", "_") + "_communities";
 
-        for (Community c : allCommunities.getAllCommunities()) {
-            Object[] rows = new Object[2];
-            rows[0] = c;
-            rows[1] = c.getPostalCode();
-            model.addRow(rows);
+            PreparedStatement ptst = conn.prepareStatement(sql);
+            ResultSet rs = ptst.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) communityTable.getModel();
+            model.setRowCount(0);
+            while (rs.next()) {
+                Object o[] = {rs.getString("Name"),
+                    rs.getString("PostalCode")};
+                model.addRow(o);
+            }
+
+            conn.close();
+
+        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+            System.out.println(e);
+
         }
     }
 
     private void setLabel() {
 
-        City city = (City) cityMenu.getSelectedItem();
-        titleLabel.setText("These are all communities in " + city.getName());
+        String city = String.valueOf(cityMenu.getSelectedItem());
+        titleLabel.setText("These are all communities in " + city);
     }
 
     private boolean validateUpdate() {

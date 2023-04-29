@@ -79,7 +79,7 @@
           <Font name="Helvetica Neue" size="18" style="1"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="Hello, Please Enter Your Admin Credentials to Log In"/>
+        <Property name="text" type="java.lang.String" value="Please Enter Your Admin Credentials to Log In"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="usernameLabel">

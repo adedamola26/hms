@@ -5,6 +5,12 @@
 package view.admin;
 
 import java.awt.CardLayout;
+import static java.awt.image.ImageObserver.HEIGHT;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -36,7 +42,6 @@ public class ViewHospital extends javax.swing.JPanel {
         populateCityMenu();
         populateTable();
         updateButton.setEnabled(false);
-        viewDoctorsButton.setEnabled(false);
     }
 
     /**
@@ -64,7 +69,6 @@ public class ViewHospital extends javax.swing.JPanel {
         addressLabel = new javax.swing.JLabel();
         nameField = new javax.swing.JTextField();
         addressField = new javax.swing.JTextField();
-        viewDoctorsButton = new javax.swing.JButton();
 
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -138,13 +142,6 @@ public class ViewHospital extends javax.swing.JPanel {
 
         addressLabel.setText("Address");
 
-        viewDoctorsButton.setText("View Doctors");
-        viewDoctorsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewDoctorsButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -157,12 +154,10 @@ public class ViewHospital extends javax.swing.JPanel {
                         .addGap(208, 208, 208)
                         .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(323, 323, 323)
+                        .addGap(414, 414, 414)
                         .addComponent(updateButton)
-                        .addGap(112, 112, 112)
-                        .addComponent(addButton)
-                        .addGap(102, 102, 102)
-                        .addComponent(viewDoctorsButton))
+                        .addGap(114, 114, 114)
+                        .addComponent(addButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(58, 58, 58)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -228,8 +223,7 @@ public class ViewHospital extends javax.swing.JPanel {
                 .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(updateButton)
-                    .addComponent(addButton)
-                    .addComponent(viewDoctorsButton))
+                    .addComponent(addButton))
                 .addGap(42, 42, 42))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -245,13 +239,7 @@ public class ViewHospital extends javax.swing.JPanel {
     private void cityMenuItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cityMenuItemStateChanged
         // TODO add your handling code here:
         communityMenu.removeAllItems();
-        City selectedCity = (City) cityMenu.getSelectedItem();
-
-        CommunityDirectory allCommunities = selectedCity.getAllCommunities();
-
-        for (Community c : allCommunities.getAllCommunities()) {
-            communityMenu.addItem(c);
-        }
+        populateCommunityMenu();
     }//GEN-LAST:event_cityMenuItemStateChanged
 
     private void communityMenuItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_communityMenuItemStateChanged
@@ -266,26 +254,25 @@ public class ViewHospital extends javax.swing.JPanel {
         // TODO add your handling code here:
 
         if (validateUpdate()) {
-            CityDirectory allCities = mainSystem.getAllCities();
-            City selectedCity = mainSystem.getaCity();
-//            allCities.removeCity(selectedCity);
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
-            CommunityDirectory allCommunities = selectedCity.getAllCommunities();
-            Community selectedCommunity = mainSystem.getaCommunity();
+                String tableName = String.valueOf(communityMenu.getSelectedItem()).replaceAll("[^a-zA-Z0-9]+", "_")
+                        + "_hospitals";
+                String sql = "update " + tableName + " set Name = '" + nameField.getText()
+                        + "', Address = '" + addressField.getText()
+                        + "' where Name = '" + mainSystem.getPatientID() + "'";
+                PreparedStatement ptst = conn.prepareStatement(sql);
+                ptst.execute();
 
-            HospitalDirectory allHospitals = selectedCommunity.getAllHospitals();
-            Hospital selectedHospital = mainSystem.getaHospital();
-            selectedHospital.setName(nameField.getText());
-            selectedHospital.setAddress(addressField.getText());
+                conn.close();
+                JOptionPane.showMessageDialog(this, "Hospital's details updated successfully.", "Success", HEIGHT);
 
-            allHospitals.addHospital(selectedHospital);
-            selectedCommunity.setAllHospitals(allHospitals);
-            allCommunities.addCommunity(selectedCommunity);
-            selectedCity.setAllCommunities(allCommunities);
-            allCities.addCity(selectedCity);
-            mainSystem.setAllCities(allCities);
-
-            JOptionPane.showMessageDialog(aPanel, "Hospital's details updated successfully.", "Success", HEIGHT);
+            } catch (Exception e) {
+//            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+                System.out.println(e);
+            }
             populateTable();
 
             cityMenu.setEnabled(true);
@@ -295,7 +282,6 @@ public class ViewHospital extends javax.swing.JPanel {
             deleteButton.setEnabled(true);
             updateButton.setEnabled(false);
             addButton.setEnabled(true);
-            viewDoctorsButton.setEnabled(false);
             hospitalTable.setRowSelectionAllowed(true);
             clearFields();
         }
@@ -304,66 +290,54 @@ public class ViewHospital extends javax.swing.JPanel {
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
         if (validateAddition()) {
-            Hospital newHospital = new Hospital();
 
-            newHospital.setName(nameField.getText());
-            newHospital.setAddress(addressField.getText());
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
-            CityDirectory allCities = mainSystem.getAllCities();
-            City selectedCity = (City) cityMenu.getSelectedItem();
-            allCities.removeCity(selectedCity);
+                String tableName = String.valueOf(communityMenu.getSelectedItem()).replaceAll("[^a-zA-Z0-9]+", "_")
+                        + "_hospitals";
 
-            CommunityDirectory allCommunities = selectedCity.getAllCommunities();
-            Community selectedCommunity = (Community) communityMenu.getSelectedItem();
+                String sql = "insert into " + tableName + " (Name, Address)"
+                        + " values (?,?)";
+                PreparedStatement ptst = conn.prepareStatement(sql);
 
-            allCommunities.removeCommunity(selectedCommunity);
+                ptst.setString(1, nameField.getText());
+                ptst.setString(2, addressField.getText());
 
-            HospitalDirectory allHospitals = selectedCommunity.getAllHospitals();
-            allHospitals.addHospital(newHospital);
+                ptst.executeUpdate();
 
-            selectedCommunity.setAllHospitals(allHospitals);
-            allCommunities.addCommunity(selectedCommunity);
+                JOptionPane.showMessageDialog(this, "Hospital created successfully!", "Success", HEIGHT);
+                clearFields();
+                populateTable();
+                conn.close();
 
-            selectedCity.setAllCommunities(allCommunities);
-            allCities.addCity(selectedCity);
-            mainSystem.setAllCities(allCities);
-            JOptionPane.showMessageDialog(aPanel, "Hospital added successfully.", "Success", HEIGHT);
-            populateTable();
-            clearFields();
+            } catch (java.sql.SQLIntegrityConstraintViolationException e) {
+                JOptionPane.showMessageDialog(this, "Hospital already exists", "Success", HEIGHT);
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
         // TODO add your handling code here:
+
         int selectedIndex = hospitalTable.getSelectedRow();
+
         if (selectedIndex < 0) {
             JOptionPane.showMessageDialog(aPanel, "Please select hospital to view.", "Error", HEIGHT);
         } else {
 
             hospitalTable.setRowSelectionAllowed(false);
 
-            CityDirectory allCities = mainSystem.getAllCities();
-            City selectedCity = (City) cityMenu.getSelectedItem();
-            allCities.removeCity(selectedCity);
-            CommunityDirectory allCommunities = selectedCity.getAllCommunities();
-            Community selectedCommunity = (Community) communityMenu.getSelectedItem();
-            allCommunities.removeCommunity(selectedCommunity);
+            hospitalTable.setRowSelectionAllowed(false);
+            String id = String.valueOf(hospitalTable.getValueAt(selectedIndex, 0));
 
-            Hospital selectedHospital = (Hospital) hospitalTable.getValueAt(selectedIndex, 0);
-            HospitalDirectory allHospitals = selectedCommunity.getAllHospitals();
-            allHospitals.removeHospital(selectedHospital);
-            selectedCommunity.setAllHospitals(allHospitals);
-
-            selectedCity.setAllCommunities(allCommunities);
-//            allCities.addCity(selectedCity);
-
-            mainSystem.setAllCities(allCities);
-            mainSystem.setaCity(selectedCity);
-            mainSystem.setaCommunity(selectedCommunity);
-            mainSystem.setaHospital(selectedHospital);
-
-            nameField.setText(selectedHospital.getName());
-            addressField.setText(selectedHospital.getAddress());
+            mainSystem.setPatientID(id);
+            nameField.setText(id);
+            addressField.setText(String.valueOf(hospitalTable.getValueAt(selectedIndex, 1)));
 
             cityMenu.setEnabled(false);
             communityMenu.setEnabled(false);
@@ -372,7 +346,6 @@ public class ViewHospital extends javax.swing.JPanel {
             deleteButton.setEnabled(false);
             updateButton.setEnabled(true);
             addButton.setEnabled(false);
-            viewDoctorsButton.setEnabled(true);
 
         }
     }//GEN-LAST:event_viewButtonActionPerformed
@@ -382,39 +355,30 @@ public class ViewHospital extends javax.swing.JPanel {
 
         int selectedIndex = hospitalTable.getSelectedRow();
         if (selectedIndex < 0) {
-            JOptionPane.showMessageDialog(aPanel, "Please select hospital to delete.", "Error", HEIGHT);
+            JOptionPane.showMessageDialog(this, "Please select hospital to delete.", "Error", HEIGHT);
         } else {
-            Hospital selectedHospital = (Hospital) hospitalTable.getValueAt(selectedIndex, 0);
+            try {
+                String selectedDoc = String.valueOf(hospitalTable.getValueAt(selectedIndex, 0));
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
-            CityDirectory allCities = mainSystem.getAllCities();
-            City selectedCity = (City) cityMenu.getSelectedItem();
-            Community selectedCommunity = (Community) communityMenu.getSelectedItem();
+                String tableName = String.valueOf(communityMenu.getSelectedItem()).replaceAll("[^a-zA-Z0-9]+", "_")
+                        + "_hospitals";
+                String sql = "delete from " + tableName + " where Name= '" + selectedDoc + "'";
+                PreparedStatement ptst = conn.prepareStatement(sql);
+                ptst.executeUpdate();
 
-            allCities.removeCity(selectedCity);
+                JOptionPane.showMessageDialog(this, "Hospital deleted successfully", "Success", HEIGHT);
 
-            CommunityDirectory allCommunities = selectedCity.getAllCommunities();
+                populateTable();
 
-            allCommunities.removeCommunity(selectedCommunity);
-            HospitalDirectory allHospitals = selectedCommunity.getAllHospitals();
-            allHospitals.removeHospital(selectedHospital);
-            selectedCommunity.setAllHospitals(allHospitals);
-            allCommunities.addCommunity(selectedCommunity);
+                conn.close();
 
-            selectedCity.setAllCommunities(allCommunities);
-            allCities.addCity(selectedCity);
-            mainSystem.setAllCities(allCities);
-            JOptionPane.showMessageDialog(aPanel, "Hospital deleted successfully.", "Success", HEIGHT);
-            populateTable();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e, "sjkd", HEIGHT);
+            }
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
-
-    private void viewDoctorsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewDoctorsButtonActionPerformed
-        // TODO add your handling code here:
-        ViewDoctors viewPatients = new ViewDoctors(mainSystem);
-        aPanel.add(viewPatients);
-        CardLayout layout = (CardLayout) aPanel.getLayout();
-        layout.next(aPanel);
-    }//GEN-LAST:event_viewDoctorsButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -423,9 +387,9 @@ public class ViewHospital extends javax.swing.JPanel {
     private javax.swing.JLabel addressLabel;
     private javax.swing.JButton backButton;
     private javax.swing.JLabel cityLabel;
-    private javax.swing.JComboBox<City> cityMenu;
+    private javax.swing.JComboBox<String> cityMenu;
     private javax.swing.JLabel communityLabel;
-    private javax.swing.JComboBox<Community> communityMenu;
+    private javax.swing.JComboBox<String> communityMenu;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTable hospitalTable;
     private javax.swing.JScrollPane jScrollPane1;
@@ -434,26 +398,81 @@ public class ViewHospital extends javax.swing.JPanel {
     private javax.swing.JLabel titleLabel;
     private javax.swing.JButton updateButton;
     private javax.swing.JButton viewButton;
-    private javax.swing.JButton viewDoctorsButton;
     // End of variables declaration//GEN-END:variables
 
     private void populateTable() {
-        DefaultTableModel model = (DefaultTableModel) hospitalTable.getModel();
-        model.setRowCount(0);
-        Community community = (Community) communityMenu.getSelectedItem();
-        HospitalDirectory hospitals = community.getAllHospitals();
-        for (Hospital h : hospitals.getAllHospitals()) {
-            Object[] rows = new Object[2];
-            rows[0] = h;
-            rows[1] = h.getAddress();
-            model.addRow(rows);
+        String city = String.valueOf(communityMenu.getSelectedItem());
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+
+            String sql = "select * from " + city.replaceAll("[^a-zA-Z0-9]+", "_") + "_hospitals";
+
+            PreparedStatement ptst = conn.prepareStatement(sql);
+            ResultSet rs = ptst.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) hospitalTable.getModel();
+            model.setRowCount(0);
+            while (rs.next()) {
+                Object o[] = {rs.getString("Name"),
+                    rs.getString("Address")};
+                model.addRow(o);
+            }
+
+            conn.close();
+
+        } catch (java.sql.SQLSyntaxErrorException e) {
+        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+            System.out.println(e);
+
         }
     }
 
     private void populateCityMenu() {
-        
-        for (City c : mainSystem.getAllCities().getAllCities()) {
-            cityMenu.addItem(c);
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+
+            String sql = "select * from citydirectory";
+
+            PreparedStatement ptst = conn.prepareStatement(sql);
+            ResultSet rs = ptst.executeQuery();
+            while (rs.next()) {
+                cityMenu.addItem(rs.getString("Name"));
+            }
+
+            conn.close();
+
+        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+            System.out.println(e);
+
+        }
+    }
+
+    private void populateCommunityMenu() {
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+            String tableName = String.valueOf(cityMenu.getSelectedItem()).replaceAll("[^a-zA-Z0-9]+", "_")
+                    + "_communities";
+            String sql = "select * from " + tableName;
+
+            PreparedStatement ptst = conn.prepareStatement(sql);
+            ResultSet rs = ptst.executeQuery();
+            while (rs.next()) {
+                communityMenu.addItem(rs.getString("Name"));
+            }
+
+            conn.close();
+
+        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
+            System.out.println(e);
+
         }
     }
 

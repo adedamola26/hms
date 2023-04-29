@@ -29,6 +29,7 @@ public class SystemAdminDashboard extends javax.swing.JPanel {
         this.aPanel = mainSystem.getaPanel();
         disableIrrelevantButtons();
         checkAdminType();
+        titleLabel.setText("Welcome "+ mainSystem.getAdminType());
     }
 
     /**
@@ -45,6 +46,8 @@ public class SystemAdminDashboard extends javax.swing.JPanel {
         logOutButton = new javax.swing.JButton();
         patientButton = new javax.swing.JButton();
         hospitalButton = new javax.swing.JButton();
+        cityButton = new javax.swing.JButton();
+        doctorButton = new javax.swing.JButton();
 
         titleLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -78,6 +81,20 @@ public class SystemAdminDashboard extends javax.swing.JPanel {
             }
         });
 
+        cityButton.setText("City");
+        cityButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cityButtonActionPerformed(evt);
+            }
+        });
+
+        doctorButton.setText("Doctor");
+        doctorButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                doctorButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -89,12 +106,19 @@ public class SystemAdminDashboard extends javax.swing.JPanel {
                 .addComponent(logOutButton)
                 .addGap(89, 89, 89))
             .addGroup(layout.createSequentialGroup()
-                .addGap(147, 147, 147)
-                .addComponent(communityButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(129, 129, 129)
-                .addComponent(patientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(123, 123, 123)
-                .addComponent(hospitalButton, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(110, 110, 110)
+                        .addComponent(cityButton, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(53, 53, 53)
+                        .addComponent(communityButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(84, 84, 84)
+                        .addComponent(patientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(108, 108, 108)
+                        .addComponent(hospitalButton, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(383, 383, 383)
+                        .addComponent(doctorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -108,8 +132,11 @@ public class SystemAdminDashboard extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(patientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(communityButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(hospitalButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(308, Short.MAX_VALUE))
+                    .addComponent(hospitalButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cityButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
+                .addComponent(doctorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(226, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -120,6 +147,7 @@ public class SystemAdminDashboard extends javax.swing.JPanel {
         aPanel.add(viewCommunity);
         CardLayout layout = (CardLayout) aPanel.getLayout();
         layout.next(aPanel);
+        
     }//GEN-LAST:event_communityButtonActionPerformed
 
     private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
@@ -129,6 +157,7 @@ public class SystemAdminDashboard extends javax.swing.JPanel {
         CardLayout layout = (CardLayout) aPanel.getLayout();
         layout.next(aPanel);
         enableRelevantButtons();
+        mainSystem.setAdminType("");
     }//GEN-LAST:event_logOutButtonActionPerformed
 
     private void patientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientButtonActionPerformed
@@ -147,9 +176,27 @@ public class SystemAdminDashboard extends javax.swing.JPanel {
         layout.next(aPanel);
     }//GEN-LAST:event_hospitalButtonActionPerformed
 
+    private void cityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cityButtonActionPerformed
+        // TODO add your handling code here:
+        ViewCities viewHospital = new ViewCities(mainSystem);
+        aPanel.add(viewHospital);
+        CardLayout layout = (CardLayout) aPanel.getLayout();
+        layout.next(aPanel);
+    }//GEN-LAST:event_cityButtonActionPerformed
+
+    private void doctorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doctorButtonActionPerformed
+        // TODO add your handling code here:
+        ViewDoctors viewPatients = new ViewDoctors(mainSystem);
+        aPanel.add(viewPatients);
+        CardLayout layout = (CardLayout) aPanel.getLayout();
+        layout.next(aPanel);
+    }//GEN-LAST:event_doctorButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cityButton;
     private javax.swing.JButton communityButton;
+    private javax.swing.JButton doctorButton;
     private javax.swing.JButton hospitalButton;
     private javax.swing.JButton logOutButton;
     private javax.swing.JButton patientButton;
@@ -180,11 +227,13 @@ public class SystemAdminDashboard extends javax.swing.JPanel {
     }
 
     private void checkAdminType() {
-        
+
         String adminType = mainSystem.getAdminType();
-        if (adminType.equals("Community Admin")){
+        if (adminType.equals("Community Admin")) {
             communityButton.setEnabled(false);
             patientButton.setEnabled(false);
+            doctorButton.setEnabled(false);
+            cityButton.setEnabled(false);
         }
     }
 }

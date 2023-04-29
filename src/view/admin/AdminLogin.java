@@ -47,7 +47,7 @@ public class AdminLogin extends javax.swing.JPanel {
 
         titleLabel.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel.setText("Hello, Please Enter Your Admin Credentials to Log In");
+        titleLabel.setText("Please Enter Your Admin Credentials to Log In");
 
         usernameLabel.setText("Username");
 
@@ -115,6 +115,7 @@ public class AdminLogin extends javax.swing.JPanel {
         if ((usernameField.getText().equals("system")) & (passwordField.getText().equals("admin"))
                 & String.valueOf(adminBox.getSelectedItem()).equals("System Admin")) {
             mainSystem.setAdminType("System Admin");
+            mainSystem.setDocID("System Admin");
             SystemAdminDashboard sAPanel = new SystemAdminDashboard(mainSystem);
             aPanel.add(sAPanel);
             CardLayout layout = (CardLayout) aPanel.getLayout();
@@ -122,6 +123,8 @@ public class AdminLogin extends javax.swing.JPanel {
         } else if ((usernameField.getText().equals("community")) & (passwordField.getText().equals("admin"))
                 & String.valueOf(adminBox.getSelectedItem()).equals("Community Admin")) {
             mainSystem.setAdminType("Community Admin");
+            mainSystem.setDocID("Community Admin");
+
             SystemAdminDashboard sAPanel = new SystemAdminDashboard(mainSystem);
             aPanel.add(sAPanel);
             CardLayout layout = (CardLayout) aPanel.getLayout();

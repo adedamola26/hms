@@ -55,9 +55,8 @@ public class MainScreen extends javax.swing.JFrame {
         topPanel.setMinimumSize(new java.awt.Dimension(980, 150));
 
         titleLabel.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
-        titleLabel.setForeground(new java.awt.Color(0, 0, 153));
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel.setText("LAGOS UNIVERSITY TEACHING HOSPITAL");
+        titleLabel.setText("Ontario Centralized Medical Record System");
 
         adminButton.setText("Admin");
         adminButton.addActionListener(new java.awt.event.ActionListener() {
@@ -82,7 +81,7 @@ public class MainScreen extends javax.swing.JFrame {
 
         titleLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         titleLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel1.setText("Welcome to LUTH, Nigeria. Please choose one of the options below to begin.");
+        titleLabel1.setText("What's your role?");
 
         javax.swing.GroupLayout topPanelLayout = new javax.swing.GroupLayout(topPanel);
         topPanel.setLayout(topPanelLayout);

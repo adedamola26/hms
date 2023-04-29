@@ -254,7 +254,7 @@ public class RecordEncounter extends javax.swing.JPanel {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
-                String sql = "insert into id_" + mainSystem.getPatientID() + "_enchistory values (?,?,?,?,?,?,?)";
+                String sql = "insert into pat_" + mainSystem.getPatientID() + "_enchistory values (?,?,?,?,?,?,?)";
                 PreparedStatement ptst = conn.prepareStatement(sql);
 
                 ptst.setString(1, dt);
@@ -267,7 +267,7 @@ public class RecordEncounter extends javax.swing.JPanel {
 
                 ptst.executeUpdate();
                 conn.close();
-            JOptionPane.showMessageDialog(aPanel, "Encounter Saved Successfully.", "Success", HEIGHT);
+                JOptionPane.showMessageDialog(aPanel, "Encounter Saved Successfully.", "Success", HEIGHT);
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e, "sjkd", HEIGHT);
@@ -392,23 +392,30 @@ public class RecordEncounter extends javax.swing.JPanel {
 
     private String getAttendingDoctor() {
         String name = null;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
+        if (!(mainSystem.getDocID().equals("System Admin")) 
+                & !(mainSystem.getDocID().equals("Community Admin"))) {
 
-            String sql = "select * from doctorsdirectory where ID = '" + mainSystem.getDocID() + "'";
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "Info5100");
 
-            PreparedStatement ptst = conn.prepareStatement(sql);
-            ResultSet rs = ptst.executeQuery();
-            rs.next();
-            name = rs.getString("FirstName") + " " + rs.getString("LastName");
-            conn.close();
+                String sql = "select * from doctorsdirectory where ID = '" + mainSystem.getDocID() + "'";
 
-        } catch (Exception e) {
+                PreparedStatement ptst = conn.prepareStatement(sql);
+                ResultSet rs = ptst.executeQuery();
+                rs.next();
+                name = rs.getString("FirstName") + " " + rs.getString("LastName");
+                conn.close();
+
+            } catch (Exception e) {
 //            JOptionPane.showMessageDialog(rootPane, e, "sjkd", HEIGHT);
 //            System.out.println(e);
 
-        }
+            }
+        } else {
+            name = mainSystem.getDocID();
+        }            
+
         return name;
     }
 }
